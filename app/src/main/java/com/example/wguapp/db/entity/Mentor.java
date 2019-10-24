@@ -1,4 +1,4 @@
-package com.example.wguapp;
+package com.example.wguapp.db.entity;
 
 import androidx.room.Entity;
 

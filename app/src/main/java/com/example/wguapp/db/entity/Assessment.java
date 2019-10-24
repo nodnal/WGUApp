@@ -1,20 +1,23 @@
-package com.example.wguapp;
+package com.example.wguapp.db.entity;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 
 import java.sql.Timestamp;
 
-@Entity
+@Entity(tableName = "assessments", foreignKeys = @ForeignKey(entity = Course.class, parentColumns = "id", childColumns = "courseId", onDelete = ForeignKey.CASCADE))
 public class Assessment {
     private int id;
+    private int courseId;
     private String title;
     private String type; //TODO: add enum for objective, performance, maybe practice
     private Timestamp goalDate;
 
-    public Assessment(String title, String type, Timestamp goalDate) {
+    public Assessment(String title, String type, Timestamp goalDate, int courseId) {
         this.title = title;
         this.type = type;
         this.goalDate = goalDate;
+        this.courseId = courseId;
     }
 
     public void setId(int id) {
@@ -23,6 +26,10 @@ public class Assessment {
 
     public int getId() {
         return id;
+    }
+
+    public int getCourseId() {
+        return courseId;
     }
 
     public String getTitle() {
