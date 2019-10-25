@@ -8,14 +8,23 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.example.wguapp.db.converter.DateConverter;
+import com.example.wguapp.db.dao.AssessmentDao;
+import com.example.wguapp.db.dao.CourseDao;
+import com.example.wguapp.db.dao.NoteDao;
 import com.example.wguapp.db.dao.TermDao;
+import com.example.wguapp.db.entity.Assessment;
+import com.example.wguapp.db.entity.Course;
+import com.example.wguapp.db.entity.Note;
 import com.example.wguapp.db.entity.Term;
 
-@Database(entities = {Term.class}, version = 1, exportSchema = false)
+@Database(entities = {Term.class, Course.class, Assessment.class, Note.class}, version = 2, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract TermDao termDao();
+    public abstract CourseDao courseDao();
+    public abstract AssessmentDao assessmentDao();
+    public abstract NoteDao noteDao();
 
     public static final String DATABASE_NAME = "AppDatabase.db";
     private static volatile AppDatabase INSTANCE;
@@ -24,7 +33,7 @@ public abstract class AppDatabase extends RoomDatabase {
         if(INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if(INSTANCE == null){
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE_NAME).build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
                 }
             }
         }

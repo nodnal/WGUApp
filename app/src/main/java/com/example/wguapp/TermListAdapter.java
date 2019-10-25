@@ -29,7 +29,10 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
 
     @Override
     public void onBindViewHolder(@NonNull TermViewHolder holder, int position) {
-        holder.title.setText(terms.get(position).getTitle());
+        Term term = terms.get(position);
+        holder.title.setText(term.getTitle());
+        holder.startDate.setText(term.getStartDate().toString());
+        holder.endDate.setText(term.getEndDate().toString());
     }
 
     @Override
@@ -42,6 +45,11 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
     public class TermViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.term_list_item_title)
         TextView title;
+        @BindView(R.id.term_list_item_start_date)
+        TextView startDate;
+        @BindView(R.id.term_list_item_end_date)
+        TextView endDate;
+
         public TermViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

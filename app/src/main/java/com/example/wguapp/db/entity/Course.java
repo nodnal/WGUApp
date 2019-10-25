@@ -1,22 +1,28 @@
 package com.example.wguapp.db.entity;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
-@Entity(tableName = "courses", foreignKeys = @ForeignKey(entity = Term.class, parentColumns = "id", childColumns = "termId", onDelete = ForeignKey.RESTRICT))
+@Entity(tableName = "courses", indices = {@Index("term_id")}, foreignKeys = @ForeignKey(entity = Term.class, parentColumns = "id", childColumns = "term_id", onDelete = ForeignKey.RESTRICT))
 public class Course {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @ColumnInfo(name = "term_id")
     private int termId;
     private String title;
-    private Timestamp startDate;
-    private Timestamp endDate;
+    @ColumnInfo(name = "start_date")
+    private Date startDate;
+    @ColumnInfo(name = "end_date")
+    private Date endDate;
     private String status; //TODO: add enum
 
-    public Course(String title, Timestamp startDate, Timestamp endDate, String status, int termId) {
+    public Course(String title, Date startDate, Date endDate, String status, int termId) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -40,11 +46,11 @@ public class Course {
         return title;
     }
 
-    public Timestamp getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public Timestamp getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
