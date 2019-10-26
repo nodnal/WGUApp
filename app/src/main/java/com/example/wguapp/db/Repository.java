@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.wguapp.db.dao.AssessmentDao;
 import com.example.wguapp.db.dao.CourseDao;
@@ -15,6 +16,8 @@ import com.example.wguapp.db.entity.Note;
 import com.example.wguapp.db.entity.Term;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class Repository {
     private TermDao termDao;
@@ -27,7 +30,18 @@ public class Repository {
     private LiveData<List<Assessment>> allAssessments;
     private LiveData<List<Note>> allNotes;
 
-    public Repository(Application application){
+    private Executor executor = Executors.newSingleThreadExecutor();
+
+    private static Repository instance;
+
+    public static Repository getInstance(Application application){
+        if (instance == null) {
+            instance = new Repository(application);
+        }
+        return instance;
+    }
+
+    private Repository(Application application){
         AppDatabase appDatabase = AppDatabase.getDatabase(application);
         termDao = appDatabase.termDao();
         courseDao = appDatabase.courseDao();
@@ -54,72 +68,19 @@ public class Repository {
     }
 
     public void insertTerm (Term term) {
-        new insertTermAsyncTask(termDao).execute(term);
+        executor.execute(() -> termDao.insert(term));
     }
     public void insertCourse (Course course) {
-        new insertCourseAsyncTask(courseDao).execute(course);
+        executor.execute(() -> courseDao.insert(course));
     }
     public void insertAssessment (Assessment assessment) {
-        new insertAssessmentAsyncTask(assessmentDao).execute(assessment);
+        executor.execute(() -> assessmentDao.insert(assessment));
     }
     public void insertNote (Note note) {
-        new insertNoteAsyncTask(noteDao).execute(note);
+        executor.execute(() -> noteDao.insert(note));
     }
 
-    private static class insertTermAsyncTask extends AsyncTask<Term, Void, Void> {
-
-        private TermDao mAsyncTaskTermDao;
-
-        insertTermAsyncTask(TermDao dao) {
-            mAsyncTaskTermDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final Term... params) {
-            mAsyncTaskTermDao.insert(params[0]);
-            return null;
-        }
-    }
-    private static class insertCourseAsyncTask extends AsyncTask<Course, Void, Void> {
-
-        private CourseDao mAsyncTaskCourseDao;
-
-        insertCourseAsyncTask(CourseDao dao) {
-            mAsyncTaskCourseDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final Course... params) {
-            mAsyncTaskCourseDao.insert(params[0]);
-            return null;
-        }
-    }
-    private static class insertAssessmentAsyncTask extends AsyncTask<Assessment, Void, Void> {
-
-        private AssessmentDao mAsyncTaskAssessmentDao;
-
-        insertAssessmentAsyncTask(AssessmentDao dao) {
-            mAsyncTaskAssessmentDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final Assessment... params) {
-            mAsyncTaskAssessmentDao.insert(params[0]);
-            return null;
-        }
-    }
-    private static class insertNoteAsyncTask extends AsyncTask<Note, Void, Void> {
-
-        private NoteDao mAsyncTaskNoteDao;
-
-        insertNoteAsyncTask(NoteDao dao) {
-            mAsyncTaskNoteDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final Note... params) {
-            mAsyncTaskNoteDao.insert(params[0]);
-            return null;
-        }
+    public void getTerm(int termId, MutableLiveData<Term> term) {
+        executor.execute(() -> {term.postValue(termDao.getTerm(termId));});
     }
 }

@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.wguapp.ui.TermListActivity;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void btnHandler(){
-        Intent intent = new Intent(this, TermActivity.class);
+        Intent intent = new Intent(this, TermListActivity.class);
         startActivity(intent);
     }
 

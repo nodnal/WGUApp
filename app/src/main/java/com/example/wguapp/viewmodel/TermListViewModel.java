@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.wguapp.db.Repository;
 import com.example.wguapp.db.entity.Term;
@@ -12,25 +13,25 @@ import com.example.wguapp.db.entity.Term;
 import java.util.Date;
 import java.util.List;
 
-public class TermViewModel extends AndroidViewModel {
+public class TermListViewModel extends AndroidViewModel {
     private Repository repo;
     private LiveData<List<Term>> allTerms;
 
-    public TermViewModel(@NonNull Application application) {
+
+    public TermListViewModel(@NonNull Application application) {
         super(application);
-        repo = new Repository(application);
-        repo.insertTerm(new Term("title1", new Date(1), new Date(6)));
+
+        repo = Repository.getInstance(application);
         allTerms = repo.getAllTerms();
+
     }
-
-
 
     public LiveData<List<Term>> getAllTerms(){
         return allTerms;
     }
 
-    public void insertTerm(){
-        int number = allTerms.getValue().size();
-        repo.insertTerm(new Term("title"+number, new Date(1), new Date(6)));
+    public void insertTerm(Term term){
+        repo.insertTerm(term);
     }
+
 }
