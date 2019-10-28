@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/group_edit">
+    <item
+        android:id="@+id/action_edit"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_edit_black_24dp"
+        android:title="Edit"/>
+
+    </group>
+    <group android:id="@+id/group_save">
+        <item
+        android:id="@+id/action_save"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_check_black_24dp"
+        android:title="Save"/>
+    </group>
+</menu>

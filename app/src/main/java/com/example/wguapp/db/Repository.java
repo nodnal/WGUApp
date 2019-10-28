@@ -1,10 +1,8 @@
 package com.example.wguapp.db;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.wguapp.db.dao.AssessmentDao;
 import com.example.wguapp.db.dao.CourseDao;
@@ -80,7 +78,7 @@ public class Repository {
         executor.execute(() -> noteDao.insert(note));
     }
 
-    public void getTerm(int termId, MutableLiveData<Term> term) {
-        executor.execute(() -> {term.postValue(termDao.getTerm(termId));});
+    public LiveData<Term> getTerm(int termId) {
+        return termDao.getTerm(termId);
     }
 }

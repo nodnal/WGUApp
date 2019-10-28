@@ -12,12 +12,14 @@ public class Note {
     private int id;
     @ColumnInfo(name = "course_id")
     private int courseId;
-    private String title;
-    private String note;
+    public String Title;
+    public String Note;
+
+    public Note(){}
 
     public Note(String title, String note, int courseId) {
-        this.title = title;
-        this.note = note;
+        this.Title = title;
+        this.Note = note;
         this.courseId = courseId;
     }
 
@@ -32,12 +34,8 @@ public class Note {
     public int getCourseId(){
         return courseId;
     }
-
-    public String getTitle() {
-        return title;
+    public void setCourseId(int courseId){
+        this.courseId = courseId;
     }
 
-    public String getNote() {
-        return note;
-    }
 }

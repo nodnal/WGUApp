@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wguapp.db.entity.Term;
 import com.example.wguapp.ui.TermDetailActivity;
-import com.example.wguapp.ui.TermListFragment;
+import com.example.wguapp.util.DateUtil;
 
 import java.util.List;
 
@@ -34,9 +34,9 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
     @Override
     public void onBindViewHolder(@NonNull TermViewHolder holder, int position) {
         Term term = terms.get(position);
-        holder.title.setText(term.getTitle());
-        holder.startDate.setText(term.getStartDate().toString());
-        holder.endDate.setText(term.getEndDate().toString());
+        holder.title.setText(term.Title);
+        holder.startDate.setText(DateUtil.toString(term.StartDate));
+        holder.endDate.setText(DateUtil.toString(term.EndDate));
     }
 
     @Override

@@ -10,16 +10,20 @@ import java.util.Date;
 public class Term {
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String title;
+    public String Title;
     @ColumnInfo(name = "start_date")
-    private Date startDate;
+    public Date StartDate;
     @ColumnInfo(name = "end_date")
-    private Date endDate;
+    public Date EndDate;
+
+    public Term(){
+
+    }
 
     public Term(String title, Date startDate, Date endDate) {
-        this.title = title;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.Title = title;
+        this.StartDate = startDate;
+        this.EndDate = endDate;
     }
 
     public void setId(int id) {
@@ -28,17 +32,5 @@ public class Term {
 
     public int getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
     }
 }

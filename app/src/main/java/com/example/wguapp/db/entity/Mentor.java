@@ -9,19 +9,21 @@ public class Mentor {
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "first_name")
-    private String firstName;
+    public String FirstName;
     @ColumnInfo(name = "last_name")
-    private String lastName;
+    public String LastName;
     @ColumnInfo(name = "phone_number")
-    private String phoneNumber;
+    public String PhoneNumber;
     @ColumnInfo(name = "email_address")
-    private String emailAddress;
+    public String EmailAddress;
+
+    public Mentor(){}
 
     public Mentor(String firstName, String lastName, String phoneNumber, String emailAddress) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.emailAddress = emailAddress;
+        this.FirstName = firstName;
+        this.LastName = lastName;
+        this.PhoneNumber = phoneNumber;
+        this.EmailAddress = emailAddress;
     }
 
     public void setId(int id) {
@@ -30,21 +32,5 @@ public class Mentor {
 
     public int getId() {
         return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
     }
 }

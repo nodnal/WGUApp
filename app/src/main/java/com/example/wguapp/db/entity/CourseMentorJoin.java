@@ -3,6 +3,7 @@ package com.example.wguapp.db.entity;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 
 @Entity(tableName = "course_mentor_join",
 primaryKeys = {"course_id", "mentor_id"},
@@ -11,7 +12,8 @@ foreignKeys = {@ForeignKey(entity = Course.class,
                 childColumns = "course_id"),
                 @ForeignKey(entity = Mentor.class,
                 parentColumns = "id",
-                childColumns = "mentor_id")})
+                childColumns = "mentor_id")},
+                indices = {@Index("course_id"), @Index("mentor_id")})
 public class CourseMentorJoin {
     @ColumnInfo(name = "course_id")
     private int courseId;

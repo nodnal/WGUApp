@@ -8,7 +8,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.wguapp.db.entity.CourseMentorJoin;
-import com.example.wguapp.db.entity.Mentor;
 
 @Dao
 public interface CourseMentorDao {
@@ -19,11 +18,14 @@ public interface CourseMentorDao {
     @Delete
     void delete(CourseMentorJoin join);
 
-    @Query("SELECT mentors.* " +
+    @Query("SELECT * FROM course_mentor_join")
+    LiveData<CourseMentorJoin> GetAllCourseMentorJoins();
+
+/*    @Query("SELECT mentors.* " +
             "FROM courses LEFT JOIN course_mentor_join ON courses.id = course_mentor_join.course_id " +
             "LEFT JOIN mentors ON mentors.id = course_mentor_join.mentor_id " +
             "WHERE courses.id = :courseId")
-    LiveData<Mentor> getAllMentorsForCourseId(int courseId);
+    LiveData<Mentor> getAllMentorsForCourseId(int courseId);*/
 
 
 

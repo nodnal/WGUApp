@@ -6,19 +6,16 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.wguapp.db.entity.Term;
+import com.example.wguapp.db.entity.Mentor;
 
 import java.util.List;
 
 @Dao
-public interface TermDao {
+public interface MentorDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Term term);
+    void insert(Mentor mentor);
 
-    @Query("SELECT * FROM terms ORDER BY start_date")
-    LiveData<List<Term>> getTerms();
-
-    @Query("SELECT * FROM terms WHERE id = :termId")
-    LiveData<Term> getTerm(int termId);
+    @Query("SELECT * FROM mentors")
+    LiveData<List<Mentor>> getAllMentors();
 }
