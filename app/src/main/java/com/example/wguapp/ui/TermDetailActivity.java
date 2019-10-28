@@ -57,8 +57,8 @@ public class TermDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_detail);
         ButterKnife.bind(this);
-        isEditable = new MutableLiveData<>();
         vm = ViewModelProviders.of(this).get(TermDetailViewModel.class);
+        initViewModelBindings();
         initUI();
 
         if(getIntent().getExtras() != null) {
@@ -68,6 +68,11 @@ public class TermDetailActivity extends AppCompatActivity {
             isEditable.postValue(true);
         }
 
+
+    }
+
+    private void initViewModelBindings() {
+        isEditable = new MutableLiveData<>();
 
         term = vm.getTerm();
         term.observe(this, term -> {
@@ -79,6 +84,22 @@ public class TermDetailActivity extends AppCompatActivity {
         courses = vm.getCourses();
         courses.observe(this, courses -> courseAdapter.setCourses(courses));
 
+        isEditable.observe(this, editable -> {
+            if (editable){
+                toolbar.getMenu().setGroupVisible(R.id.group_save, true);
+                toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
+                title.setInputType(InputType.TYPE_CLASS_TEXT);
+                startDate.setInputType(InputType.TYPE_CLASS_DATETIME);
+                endDate.setInputType(InputType.TYPE_CLASS_DATETIME);
+            }else{
+                toolbar.getMenu().setGroupVisible(R.id.group_save, false);
+                toolbar.getMenu().setGroupVisible(R.id.group_edit, true);
+                title.setInputType(InputType.TYPE_NULL);
+                startDate.setInputType(InputType.TYPE_NULL);
+                endDate.setInputType(InputType.TYPE_NULL);
+            }
+
+        });
     }
 
     @Override
@@ -107,28 +128,7 @@ public class TermDetailActivity extends AppCompatActivity {
         courseAdapter = new CourseListAdapter();
         CourseList.setAdapter(courseAdapter);
         CourseList.setLayoutManager(new LinearLayoutManager(this));
-        EditBtn.setOnClickListener((btn) -> isEditable.postValue(true));
-        SaveBtn.setOnClickListener((btn) -> SaveTerm());
-        isEditable.observe(this, editable -> {
-            if (editable){
-                toolbar.getMenu().setGroupVisible(R.id.group_save, true);
-                toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
-                EditBtn.hide();
-                SaveBtn.show();
-                title.setInputType(InputType.TYPE_CLASS_TEXT);
-                startDate.setInputType(InputType.TYPE_CLASS_DATETIME);
-                endDate.setInputType(InputType.TYPE_CLASS_DATETIME);
-            }else{
-                toolbar.getMenu().setGroupVisible(R.id.group_save, false);
-                toolbar.getMenu().setGroupVisible(R.id.group_edit, true);
-                EditBtn.show();
-                SaveBtn.hide();
-                title.setInputType(InputType.TYPE_NULL);
-                startDate.setInputType(InputType.TYPE_NULL);
-                endDate.setInputType(InputType.TYPE_NULL);
-            }
 
-        });
     }
 
     private void SaveTerm() {
