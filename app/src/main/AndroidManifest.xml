@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".ui.CourseDetailActivity"></activity>
+
+        <activity android:name=".ui.CourseDetailActivity" />
         <activity android:name=".ui.TermDetailActivity" />
         <activity android:name=".ui.TermListActivity" />
-        <activity android:name=".TermActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

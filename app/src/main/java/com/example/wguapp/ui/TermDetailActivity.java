@@ -144,7 +144,7 @@ public class TermDetailActivity extends AppCompatActivity implements OnViewHolde
         CourseList.setLayoutManager(new LinearLayoutManager(this));
         addCourseBtn.setOnClickListener((btn)->{
             Intent intent = new Intent(this, CourseDetailActivity.class);
-            intent.putExtra("TermId", term.getValue().getId());
+            intent.putExtra("term_id", term.getValue().getId());
             startActivityForResult(intent, NEW_COURSE_CODE);
 
         });

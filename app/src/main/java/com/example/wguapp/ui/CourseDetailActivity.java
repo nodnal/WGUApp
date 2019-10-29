@@ -5,9 +5,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.wguapp.R;
 import com.example.wguapp.db.entity.Assessment;
@@ -16,6 +18,7 @@ import com.example.wguapp.db.entity.CourseMentorJoin;
 import com.example.wguapp.db.entity.Mentor;
 import com.example.wguapp.db.entity.Note;
 import com.example.wguapp.viewmodel.CourseDetailViewModel;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
 
@@ -27,7 +30,9 @@ public class CourseDetailActivity extends AppCompatActivity {
     private LiveData<List<Note>> notes;
     private LiveData<List<Mentor>> mentors;
     private LiveData<List<CourseMentorJoin>> assignedMentors;
-    private MutableLiveData isEditable;
+    private MutableLiveData<Boolean> isEditable;
+
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +41,43 @@ public class CourseDetailActivity extends AppCompatActivity {
         initViewModel();
         initBindings();
         initUI();
+        initTabs();
+
+        if(getIntent().hasExtra("term_id")) {
+            isEditable.postValue(true);
+        }
+        else{
+            vm.LoadCourse(getIntent().getExtras().getInt("course_id"));
+            isEditable.postValue(false);
+        }
+
+    }
+
+    private void initTabs() {
+        ViewPager viewPager = findViewById(R.id.course_detail_view_pager);
+        TabLayout tabLayout = findViewById(R.id.course_detail_tab_layout);
+        CoursePagerAdapter adapter = new CoursePagerAdapter(getSupportFragmentManager(), isEditable);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void initUI() {
+        toolbar = findViewById(R.id.course_detail_toolbar);
 
+        setSupportActionBar(toolbar);
     }
 
     private void initBindings() {
-
+        isEditable = new MutableLiveData<>();
+        isEditable.observe(this, (value) -> {
+            if (value) {
+                toolbar.getMenu().setGroupVisible(R.id.group_save, true);
+                toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
+            } else {
+                toolbar.getMenu().setGroupVisible(R.id.group_save, false);
+                toolbar.getMenu().setGroupVisible(R.id.group_edit, true);
+            }
+        });
     }
 
     private void initViewModel() {
