@@ -14,7 +14,7 @@ import java.util.List;
 public interface CourseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Course course);
+    long insert(Course course);
 
     @Query("SELECT * FROM courses ORDER BY start_date")
     LiveData<List<Course>> getCourses();

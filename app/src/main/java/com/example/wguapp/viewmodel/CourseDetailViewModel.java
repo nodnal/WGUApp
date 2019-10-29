@@ -33,9 +33,7 @@ public class CourseDetailViewModel extends AndroidViewModel {
         assessments = Transformations.switchMap(courseId, (id) -> Transformations.map(repo.getAllAssessments(), (list) -> list.stream()
                 .filter(assessment -> assessment.getCourseId()==id)
                 .collect(Collectors.toList())));
-        /*TODO: mentors = Transformations.map(repo.getAllMentors(), (list) -> list.stream()
-                .filter(mentor -> mentor.getCourseId()==courseId.getValue())
-                .collect(Collectors.toList()));*/
+        mentors = repo.getAllAssignedMentorsForCourse(courseId);
         notes = Transformations.switchMap(courseId, (id) -> Transformations.map(repo.getAllNotes(), (list) -> list.stream()
                 .filter(note -> note.getCourseId()==id)
                 .collect(Collectors.toList())));
@@ -46,16 +44,15 @@ public class CourseDetailViewModel extends AndroidViewModel {
     }
 
     public void SaveCourse(Course course){
-        //TODO: get ID after insert
-        repo.insertCourse(course);
-    }
-
-    public LiveData<List<Assessment>> getAssessments() {
-        return assessments;
+        repo.insertCourse(course, courseId);
     }
 
     public LiveData<Course> getCourse() {
         return course;
+    }
+
+    public LiveData<List<Assessment>> getAssessments() {
+        return assessments;
     }
 
     public LiveData<List<Note>> getNotes() {

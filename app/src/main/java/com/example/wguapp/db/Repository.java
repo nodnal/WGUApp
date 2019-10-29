@@ -3,6 +3,8 @@ package com.example.wguapp.db;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.example.wguapp.db.dao.AssessmentDao;
 import com.example.wguapp.db.dao.CourseDao;
@@ -20,6 +22,7 @@ import com.example.wguapp.db.entity.Term;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class Repository {
     private TermDao termDao;
@@ -81,8 +84,8 @@ public class Repository {
     public void insertTerm (Term term) {
         executor.execute(() -> termDao.insert(term));
     }
-    public void insertCourse (Course course) {
-        executor.execute(() -> courseDao.insert(course));
+    public void insertCourse(Course course, MutableLiveData<Integer> courseId) {
+        executor.execute(() -> courseId.postValue(Math.toIntExact(courseDao.insert(course))));
     }
     public void insertAssessment (Assessment assessment) {
         executor.execute(() -> assessmentDao.insert(assessment));
@@ -99,4 +102,22 @@ public class Repository {
         return courseDao.getCourse(id);
     }
 
+    public LiveData<List<Mentor>> getAllAssignedMentorsForCourse(LiveData<Integer> courseId) {
+
+        return Transformations.switchMap(courseId,(id) ->
+                    Transformations.switchMap(
+                        Transformations.map(allMentorAssignments, (assignments) ->
+                                            assignments.stream()
+                                                        .filter((assignment) -> assignment.getCourseId() == id)
+                                                        .map((assignment)-> assignment.getMentorId())
+                                                        .collect(Collectors.toList())
+                                            )
+                        , (mentorIds) ->
+                                Transformations.map(getAllMentors(), (mentors)->
+                                                    mentors.stream()
+                                                            .filter((mentor) -> mentorIds.contains(mentor.getId()))
+                                                            .collect(Collectors.toList()))
+                    )
+        );
+    }
 }

@@ -6,6 +6,7 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.wguapp.R;
@@ -26,6 +27,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private LiveData<List<Note>> notes;
     private LiveData<List<Mentor>> mentors;
     private LiveData<List<CourseMentorJoin>> assignedMentors;
+    private MutableLiveData isEditable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,14 @@ public class CourseDetailActivity extends AppCompatActivity {
         initViewModel();
         initBindings();
         initUI();
+    }
+
+    private void initUI() {
+
+    }
+
+    private void initBindings() {
+
     }
 
     private void initViewModel() {
@@ -58,10 +68,14 @@ public class CourseDetailActivity extends AppCompatActivity {
             isEditable.postValue(true);
             return(true);
         case R.id.action_save:
-            SaveTerm();
+            SaveCourse();
             return(true);
 
     }
         return(super.onOptionsItemSelected(item));
+    }
+
+    private void SaveCourse() {
+        vm.SaveCourse(course.getValue());
     }
 }
