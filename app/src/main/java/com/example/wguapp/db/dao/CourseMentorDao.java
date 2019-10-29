@@ -9,6 +9,8 @@ import androidx.room.Query;
 
 import com.example.wguapp.db.entity.CourseMentorJoin;
 
+import java.util.List;
+
 @Dao
 public interface CourseMentorDao {
 
@@ -19,7 +21,7 @@ public interface CourseMentorDao {
     void delete(CourseMentorJoin join);
 
     @Query("SELECT * FROM course_mentor_join")
-    LiveData<CourseMentorJoin> GetAllCourseMentorJoins();
+    LiveData<List<CourseMentorJoin>> getAllCourseMentorJoins();
 
 /*    @Query("SELECT mentors.* " +
             "FROM courses LEFT JOIN course_mentor_join ON courses.id = course_mentor_join.course_id " +

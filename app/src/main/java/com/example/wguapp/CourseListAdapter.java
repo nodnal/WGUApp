@@ -1,6 +1,5 @@
 package com.example.wguapp;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wguapp.db.entity.Course;
-import com.example.wguapp.ui.CourseDetailActivity;
+import com.example.wguapp.ui.OnViewHolderBindCallback;
 import com.example.wguapp.util.DateUtil;
 
 import java.util.List;
@@ -22,7 +21,13 @@ public class CourseListAdapter extends RecyclerView.Adapter<com.example.wguapp.C
 
 
         private List<Course> courses;
-        public View.OnClickListener ViewHolderOnClickListener;
+
+
+        public OnViewHolderBindCallback OnViewHolderBind;
+
+        public CourseListAdapter(OnViewHolderBindCallback cb){
+            this.OnViewHolderBind = cb;
+        }
 
         @NonNull
         @Override
@@ -38,6 +43,9 @@ public class CourseListAdapter extends RecyclerView.Adapter<com.example.wguapp.C
             holder.title.setText(course.Title);
             holder.startDate.setText(DateUtil.toString(course.StartDate));
             holder.endDate.setText(DateUtil.toString(course.EndDate));
+            if (OnViewHolderBind != null){
+                OnViewHolderBind.onViewHolderBind(holder, position);
+            }
         }
 
         @Override
@@ -48,7 +56,7 @@ public class CourseListAdapter extends RecyclerView.Adapter<com.example.wguapp.C
         }
 
 
-        public class CourseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        public class CourseViewHolder extends RecyclerView.ViewHolder{
             @BindView(R.id.term_list_item_title)
             TextView title;
             @BindView(R.id.term_list_item_start_date)
@@ -59,18 +67,8 @@ public class CourseListAdapter extends RecyclerView.Adapter<com.example.wguapp.C
             public CourseViewHolder(@NonNull View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
-                itemView.setOnClickListener(this::onClick);
             }
 
-            @Override
-            public void onClick(View v) {
-                int position = getAdapterPosition();
-                Course course = courses.get(position);
-                Intent intent = new Intent(v.getContext(), CourseDetailActivity.class);
-                intent.putExtra("term_id", course.getId());
-                v.getContext().startActivity(intent);
-
-            }
         }
 
         public void setCourses(List<Course> courses){

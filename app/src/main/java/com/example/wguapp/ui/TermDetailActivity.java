@@ -1,5 +1,6 @@
 package com.example.wguapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
@@ -29,8 +30,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TermDetailActivity extends AppCompatActivity {
+public class TermDetailActivity extends AppCompatActivity implements OnViewHolderBindCallback {
 
+    private static final int NEW_COURSE_CODE = 2;
+    private static final int EDIT_COURSE_CODE = 1;
     TermDetailViewModel vm;
     LiveData<Term> term;
     LiveData<List<Course>> courses;
@@ -43,14 +46,12 @@ public class TermDetailActivity extends AppCompatActivity {
     public TextView startDate;
     @BindView(R.id.end_date_et)
     public TextView endDate;
-    @BindView(R.id.term_detail_save_fab)
-    public FloatingActionButton SaveBtn;
-    @BindView(R.id.term_detail_edit_fab)
-    public FloatingActionButton EditBtn;
     @BindView(R.id.term_detail_course_list)
     public RecyclerView CourseList;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
+    @BindView(R.id.add_course_fab)
+    public FloatingActionButton addCourseBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,11 +124,30 @@ public class TermDetailActivity extends AppCompatActivity {
         return(super.onOptionsItemSelected(item));
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK) {
+            Toast toast;
+            if (requestCode == NEW_COURSE_CODE) {
+                toast = Toast.makeText(this, "Course Added!", Toast.LENGTH_SHORT);
+            } else {
+                toast = Toast.makeText(this, "Changes Saved!", Toast.LENGTH_SHORT);
+            }
+            toast.show();
+        }
+    }
+
     private void initUI() {
         setSupportActionBar(toolbar);
-        courseAdapter = new CourseListAdapter();
+        courseAdapter = new CourseListAdapter(this);
         CourseList.setAdapter(courseAdapter);
         CourseList.setLayoutManager(new LinearLayoutManager(this));
+        addCourseBtn.setOnClickListener((btn)->{
+            Intent intent = new Intent(this, CourseDetailActivity.class);
+            intent.putExtra("TermId", term.getValue().getId());
+            startActivityForResult(intent, NEW_COURSE_CODE);
+
+        });
 
     }
 
@@ -153,4 +173,16 @@ public class TermDetailActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public void onViewHolderBind(RecyclerView.ViewHolder viewHolder, int position) {
+        viewHolder.itemView.setOnClickListener((view) -> {
+            Intent intent = new Intent(this, CourseDetailActivity.class);
+            intent.putExtra("course_id", courses.getValue().get(viewHolder.getAdapterPosition()).getId());
+            startActivityForResult(intent, EDIT_COURSE_CODE);
+        });
+    }
+
+
 }
+

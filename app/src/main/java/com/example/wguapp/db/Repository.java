@@ -6,10 +6,14 @@ import androidx.lifecycle.LiveData;
 
 import com.example.wguapp.db.dao.AssessmentDao;
 import com.example.wguapp.db.dao.CourseDao;
+import com.example.wguapp.db.dao.CourseMentorDao;
+import com.example.wguapp.db.dao.MentorDao;
 import com.example.wguapp.db.dao.NoteDao;
 import com.example.wguapp.db.dao.TermDao;
 import com.example.wguapp.db.entity.Assessment;
 import com.example.wguapp.db.entity.Course;
+import com.example.wguapp.db.entity.CourseMentorJoin;
+import com.example.wguapp.db.entity.Mentor;
 import com.example.wguapp.db.entity.Note;
 import com.example.wguapp.db.entity.Term;
 
@@ -22,11 +26,15 @@ public class Repository {
     private CourseDao courseDao;
     private AssessmentDao assessmentDao;
     private NoteDao noteDao;
+    private MentorDao mentorDao;
+    private CourseMentorDao courseMentorDao;
 
     private LiveData<List<Term>> allTerms;
     private LiveData<List<Course>> allCourses;
     private LiveData<List<Assessment>> allAssessments;
     private LiveData<List<Note>> allNotes;
+    private LiveData<List<Mentor>> allMentors;
+    private LiveData<List<CourseMentorJoin>> allMentorAssignments;
 
     private Executor executor = Executors.newSingleThreadExecutor();
 
@@ -45,11 +53,15 @@ public class Repository {
         courseDao = appDatabase.courseDao();
         assessmentDao = appDatabase.assessmentDao();
         noteDao = appDatabase.noteDao();
+        mentorDao = appDatabase.mentorDao();
+        courseMentorDao = appDatabase.courseMentorDao();
 
         allTerms = termDao.getTerms();
         allCourses = courseDao.getCourses();
         allAssessments = assessmentDao.getAssessments();
         allNotes = noteDao.getNotes();
+        allMentors = mentorDao.getAllMentors();
+        allMentorAssignments = courseMentorDao.getAllCourseMentorJoins();
     }
 
     public LiveData<List<Term>> getAllTerms() {
@@ -64,6 +76,7 @@ public class Repository {
     public LiveData<List<Note>> getAllNotes() {
         return allNotes;
     }
+    public LiveData<List<Mentor>> getAllMentors() {return allMentors;}
 
     public void insertTerm (Term term) {
         executor.execute(() -> termDao.insert(term));
@@ -81,4 +94,9 @@ public class Repository {
     public LiveData<Term> getTerm(int termId) {
         return termDao.getTerm(termId);
     }
+
+    public LiveData<Course> getCourse(Integer id) {
+        return courseDao.getCourse(id);
+    }
+
 }

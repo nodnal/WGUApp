@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.wguapp.db.entity.Course;
-import com.example.wguapp.db.entity.Term;
 
 import java.util.List;
 
@@ -20,4 +19,6 @@ public interface CourseDao {
     @Query("SELECT * FROM courses ORDER BY start_date")
     LiveData<List<Course>> getCourses();
 
+    @Query("Select * FROM courses WHERE id = :id")
+    LiveData<Course> getCourse(Integer id);
 }
