@@ -120,4 +120,15 @@ public class Repository {
                     )
         );
     }
+
+    public LiveData<Assessment> getAssessment(LiveData<Integer> assessmentId) {
+        return Transformations.switchMap(assessmentId, (id) -> Transformations.map(allAssessments, (assessments) -> assessments.stream()
+                .filter((a)-> a.getId() == id)
+                .findFirst()
+                .get()));
+    }
+
+    public void saveAssessment(Assessment assessment, MutableLiveData<Integer> assessmentId) {
+        executor.execute(() -> assessmentId.postValue(Math.toIntExact(assessmentDao.insert(assessment))));
+    }
 }

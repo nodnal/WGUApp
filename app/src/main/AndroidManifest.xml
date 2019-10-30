@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
+        <activity android:name=".AssessmentDetailActivity"></activity>
+        <activity android:name=".MentorDetailActivity" />
+        <activity android:name=".NoteDetailActivity" />
         <activity android:name=".ui.CourseDetailActivity" />
         <activity android:name=".ui.TermDetailActivity" />
         <activity android:name=".ui.TermListActivity" />

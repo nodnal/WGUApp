@@ -15,7 +15,7 @@ import java.util.List;
 public interface AssessmentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Assessment assessment);
+    long insert(Assessment assessment);
 
     @Query("SELECT * FROM assessments ORDER BY goal_date")
     LiveData<List<Assessment>> getAssessments();
