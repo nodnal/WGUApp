@@ -65,7 +65,7 @@ public class CourseMainFragment extends Fragment {
 
             return(true);
         case R.id.action_save:
-            SaveCourse();
+
             return(true);
 
     }

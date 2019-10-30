@@ -44,6 +44,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         initTabs();
 
         if(getIntent().hasExtra("term_id")) {
+            vm.LoadNewCourse(getIntent().getExtras().getInt("term_id"));
             isEditable.postValue(true);
         }
         else{

@@ -63,8 +63,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/term_detail_course_list"
-        android:layout_width="431dp"
-        android:layout_height="506dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

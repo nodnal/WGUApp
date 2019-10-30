@@ -27,9 +27,9 @@ public class TermDetailViewModel extends AndroidViewModel {
         repo = Repository.getInstance(application);
         termId = new MutableLiveData<>();
         term = Transformations.switchMap(termId,(id) -> repo.getTerm(id));
-        courses = Transformations.map(repo.getAllCourses(), (courseList) -> courseList.stream()
-                .filter(course -> course.getTermId()==termId.getValue())
-                .collect(Collectors.toList()));
+        courses = Transformations.switchMap(term, (term) -> Transformations.map(repo.getAllCourses(), (courseList) -> courseList.stream()
+                .filter(course -> course.getTermId()==term.getId())
+                .collect(Collectors.toList())));
     }
 
     public void LoadTerm(int id){
