@@ -26,16 +26,26 @@ public class CourseDetailViewModel extends AndroidViewModel {
     private LiveData<List<Assessment>> assessments;
     private LiveData<List<Mentor>> mentors;
     private LiveData<List<Note>> notes;
+    private MutableLiveData<Boolean> editable;
     private Repository repo;
+
 
     public CourseDetailViewModel(@NonNull Application application) {
         super(application);
         repo = Repository.getInstance(application);
         courseId = new MutableLiveData<>();
         termId = new MutableLiveData<>();
+
         course = new MediatorLiveData<>();
-        course.addSource(courseId, (id) -> repo.getCourse(id));
-        course.addSource(termId, (id) -> course.postValue(new Course("", new Date(), new Date(), "", id)));
+        course.addSource(Transformations.switchMap(courseId, (id) -> repo.getCourse(id)),(c) -> {
+            editable.setValue(false);
+            course.setValue(c);
+        });
+
+        course.addSource(termId, (id) -> {
+            course.setValue(new Course("", new Date(), new Date(), "", id));
+            editable.setValue(true);
+        });
         assessments = Transformations.switchMap(courseId, (id) -> Transformations.map(repo.getAllAssessments(), (list) -> list.stream()
                 .filter(assessment -> assessment.getCourseId()==id)
                 .collect(Collectors.toList())));
@@ -43,6 +53,7 @@ public class CourseDetailViewModel extends AndroidViewModel {
         notes = Transformations.switchMap(courseId, (id) -> Transformations.map(repo.getAllNotes(), (list) -> list.stream()
                 .filter(note -> note.getCourseId()==id)
                 .collect(Collectors.toList())));
+        editable = new MutableLiveData<>();
     }
 
     public void LoadCourse(int id){
@@ -71,5 +82,13 @@ public class CourseDetailViewModel extends AndroidViewModel {
 
     public LiveData<List<Mentor>> getMentors() {
         return mentors;
+    }
+
+    public void setEditable(boolean editable){
+        this.editable.setValue(editable);
+    }
+
+    public LiveData<Boolean> isEditable(){
+        return editable;
     }
 }

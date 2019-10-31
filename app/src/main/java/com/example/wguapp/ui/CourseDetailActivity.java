@@ -2,12 +2,10 @@ package com.example.wguapp.ui;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
@@ -30,7 +28,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private LiveData<List<Note>> notes;
     private LiveData<List<Mentor>> mentors;
     private LiveData<List<CourseMentorJoin>> assignedMentors;
-    private MutableLiveData<Boolean> isEditable;
+    private boolean editable;
 
     private Toolbar toolbar;
 
@@ -45,11 +43,10 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         if(getIntent().hasExtra("term_id")) {
             vm.LoadNewCourse(getIntent().getExtras().getInt("term_id"));
-            isEditable.postValue(true);
         }
         else{
-            vm.LoadCourse(getIntent().getExtras().getInt("course_id"));
-            isEditable.postValue(false);
+            int id = getIntent().getExtras().getInt("course_id");
+            vm.LoadCourse(id);
         }
 
     }
@@ -57,20 +54,19 @@ public class CourseDetailActivity extends AppCompatActivity {
     private void initTabs() {
         ViewPager viewPager = findViewById(R.id.course_detail_view_pager);
         TabLayout tabLayout = findViewById(R.id.course_detail_tab_layout);
-        CoursePagerAdapter adapter = new CoursePagerAdapter(getSupportFragmentManager(), isEditable);
+        CoursePagerAdapter adapter = new CoursePagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }
 
     private void initUI() {
         toolbar = findViewById(R.id.course_detail_toolbar);
-
         setSupportActionBar(toolbar);
     }
 
     private void initBindings() {
-        isEditable = new MutableLiveData<>();
-        isEditable.observe(this, (value) -> {
+
+        vm.isEditable().observe(this, (value) -> {
             if (value) {
                 toolbar.getMenu().setGroupVisible(R.id.group_save, true);
                 toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
@@ -84,6 +80,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private void initViewModel() {
         vm = ViewModelProviders.of(this).get(CourseDetailViewModel.class);
         course = vm.getCourse();
+        course.observe(this,(c)-> {});
         assessments = vm.getAssessments();
         notes = vm.getNotes();
         mentors = vm.getMentors();
@@ -93,24 +90,23 @@ public class CourseDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.term_menu, menu);
-        isEditable.postValue(isEditable.getValue());
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
-        case R.id.action_edit:
-            isEditable.postValue(true);
-            return(true);
-        case R.id.action_save:
-            SaveCourse();
-            return(true);
-
-    }
-        return(super.onOptionsItemSelected(item));
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
+//        case R.id.action_edit:
+//            vm.setEditable(true);
+//            return(true);
+//        case R.id.action_save:
+//            SaveCourse();
+//            return(true);
+//
+//    }
+//        return(super.onOptionsItemSelected(item));
+//    }
 
     private void SaveCourse() {
-        vm.SaveCourse(course.getValue());
+
     }
 }

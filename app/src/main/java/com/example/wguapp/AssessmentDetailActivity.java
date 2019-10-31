@@ -1,17 +1,17 @@
 package com.example.wguapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.wguapp.db.entity.Assessment;
 import com.example.wguapp.util.DateUtil;
@@ -23,7 +23,6 @@ public class AssessmentDetailActivity extends AppCompatActivity {
 
     private AssessmentDetailViewModel vm;
     private LiveData<Assessment> assessment;
-    private LiveData<Boolean> isEditable;
 
     private EditText title;
     private EditText goalDate;
@@ -49,7 +48,6 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     private void initViewModel() {
         vm = ViewModelProviders.of(this).get(AssessmentDetailViewModel.class);
         assessment = vm.getAssessment();
-        isEditable = vm.isEditable();
     }
 
     private void initUI() {
@@ -69,6 +67,22 @@ public class AssessmentDetailActivity extends AppCompatActivity {
             //TODO: alert.setChecked(a.Alert);
             //type.setText(a.Type);
         });
+        vm.isEditable().observe(this, editable ->{
+
+            if (editable) {
+                toolbar.getMenu().setGroupVisible(R.id.group_save, true);
+                toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
+                title.setInputType(InputType.TYPE_CLASS_TEXT);
+                alert.setClickable(true);
+                goalDate.setInputType(InputType.TYPE_CLASS_DATETIME);
+            } else {
+                toolbar.getMenu().setGroupVisible(R.id.group_save, false);
+                toolbar.getMenu().setGroupVisible(R.id.group_edit, true);
+                title.setInputType(InputType.TYPE_NULL);
+                goalDate.setInputType(InputType.TYPE_NULL);
+                alert.setClickable(false);
+            }
+        });
 
     }
 
@@ -76,7 +90,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.term_menu, menu);
-        vm.setEditable(isEditable.getValue());
+        vm.setEditable(vm.isEditable().getValue());
         return true;
     }
 
@@ -89,9 +103,8 @@ public class AssessmentDetailActivity extends AppCompatActivity {
             case R.id.action_save:
                 saveAssessment();
                 return (true);
-
-                default: return true;
         }
+        return(super.onOptionsItemSelected(item));
 
 
     }
@@ -105,7 +118,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
 
         if(newTitle.length() == 0){
             toast.setText("Title cannot be empty.");
-        } else if(goal.after(new Date())) {
+        } else if(goal.before(new Date())) {
             //TODO: Can a goal date not be in past, or can you not set an alert on a goal date in past???
             toast.setText("Goal Date Cannot Be in Past.");
         }else {

@@ -1,20 +1,20 @@
 package com.example.wguapp.viewmodel;
 
 import android.app.Application;
-import android.widget.CheckBox;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.wguapp.db.Repository;
 import com.example.wguapp.db.entity.Assessment;
 
+import java.util.Date;
+
 public class AssessmentDetailViewModel extends AndroidViewModel {
-    private LiveData<Assessment> assessment;
+    private MediatorLiveData<Assessment> assessment;
     private Repository repo;
     private MutableLiveData<Integer> assessmentId;
     private MutableLiveData<Integer> courseId;
@@ -26,17 +26,30 @@ public class AssessmentDetailViewModel extends AndroidViewModel {
         repo = Repository.getInstance(application);
         editable = new MutableLiveData<>();
         assessmentId = new MutableLiveData<>();
-        assessment = repo.getAssessment(assessmentId);
+        courseId = new MutableLiveData<>();
+        assessment = new MediatorLiveData<>();
+        assessment.addSource(repo.getAssessment(assessmentId), (a) -> {
+            assessment.setValue(a);
+            editable.setValue(false);
+        });
+        assessment.addSource(courseId, (id) ->{
+            Assessment a = new Assessment("", "", new Date(),id);
+            assessment.setValue(a);
+            editable.setValue(true);
+        } );
+
+
+
 
     }
 
 
     public void loadAssessment(int id){
-        assessmentId.postValue(id);
+        assessmentId.setValue(id);
     }
 
     public  void loadNewAssessment(int id){
-        courseId.postValue(id);
+        courseId.setValue(id);
     }
 
     public LiveData<Assessment> getAssessment(){
@@ -54,7 +67,7 @@ public class AssessmentDetailViewModel extends AndroidViewModel {
     }
 
     public void setEditable(boolean isEditable){
-        editable.postValue(isEditable);
+        editable.setValue(isEditable);
     }
 
 }

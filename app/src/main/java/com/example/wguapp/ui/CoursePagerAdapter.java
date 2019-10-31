@@ -3,23 +3,20 @@ package com.example.wguapp.ui;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.lifecycle.LiveData;
 
 public class CoursePagerAdapter extends FragmentPagerAdapter {
-    LiveData<Boolean> editable;
-    public CoursePagerAdapter(FragmentManager fm, LiveData<Boolean> isEditable) {
+    public CoursePagerAdapter(FragmentManager fm) {
         super(fm);
-        editable = isEditable;
     }
 
 
     @Override
     public Fragment getItem(int position) {
         switch(position){
-            case 0: return CourseMainFragment.newInstance(editable);
-            case 1: return CourseAssessmentFragment.newInstance(editable);
-            case 2: return CourseMentorFragment.newInstance(editable);
-            case 3: return CourseNoteFragment.newInstance(editable);
+            case 0: return CourseMainFragment.newInstance();
+            case 1: return CourseAssessmentFragment.newInstance();
+            case 2: return CourseMentorFragment.newInstance();
+            case 3: return CourseNoteFragment.newInstance();
             default: return null;
         }
     }

@@ -9,15 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wguapp.db.entity.Assessment;
-import com.example.wguapp.db.entity.Course;
 import com.example.wguapp.ui.OnViewHolderBindCallback;
 import com.example.wguapp.util.DateUtil;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class AssessmentListAdapter extends RecyclerView.Adapter<AssessmentListAdapter.AssessmentViewHolder> {
 
@@ -33,7 +28,7 @@ public class AssessmentListAdapter extends RecyclerView.Adapter<AssessmentListAd
     @NonNull
     @Override
     public AssessmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.term_list_item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.assessment_list_item_layout, parent, false);
         AssessmentViewHolder holder = new AssessmentViewHolder(view);
         return holder;
     }
@@ -67,7 +62,7 @@ public class AssessmentListAdapter extends RecyclerView.Adapter<AssessmentListAd
             super(itemView);
             title = itemView.findViewById(R.id.assessment_list_item_title);
             type = itemView.findViewById(R.id.assessment_list_item_type);
-            type = itemView.findViewById(R.id.assessment_list_item_type);
+            goalDate = itemView.findViewById(R.id.assessment_list_item_goal_date);
 
 
         }

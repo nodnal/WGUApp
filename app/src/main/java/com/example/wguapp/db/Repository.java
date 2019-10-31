@@ -122,7 +122,7 @@ public class Repository {
     }
 
     public LiveData<Assessment> getAssessment(LiveData<Integer> assessmentId) {
-        return Transformations.switchMap(assessmentId, (id) -> Transformations.map(allAssessments, (assessments) -> assessments.stream()
+        return Transformations.switchMap(assessmentId, (id) -> Transformations.map(assessmentDao.getAssessments(), (assessments) -> assessments.stream()
                 .filter((a)-> a.getId() == id)
                 .findFirst()
                 .get()));

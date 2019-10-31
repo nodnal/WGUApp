@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 
 import com.example.wguapp.R;
 
@@ -21,7 +20,7 @@ public class CourseNoteFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static Fragment newInstance(LiveData<Boolean> editable) {
+    public static Fragment newInstance() {
         return new CourseNoteFragment();
     }
 

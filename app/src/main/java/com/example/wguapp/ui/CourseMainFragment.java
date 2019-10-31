@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,8 @@ import com.example.wguapp.db.entity.Course;
 import com.example.wguapp.util.DateUtil;
 import com.example.wguapp.viewmodel.CourseDetailViewModel;
 
+import java.util.Date;
+
 public class CourseMainFragment extends Fragment {
 
     private EditText title;
@@ -27,18 +30,21 @@ public class CourseMainFragment extends Fragment {
 
     private CourseDetailViewModel vm;
     private LiveData<Course> course;
-    private LiveData<Boolean> isEditable;
 
     public CourseMainFragment() {
         // Required empty public constructor
     }
 
-    public static Fragment newInstance(LiveData<Boolean> editable) {
+    public static Fragment newInstance() {
         CourseMainFragment fragment = new CourseMainFragment();
-        fragment.SetEditable(editable);
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,14 +68,35 @@ public class CourseMainFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.action_edit:
-
+                vm.setEditable(true);
             return(true);
         case R.id.action_save:
-
+                vm.setEditable(false);
+                saveCourse();
             return(true);
 
     }
         return(super.onOptionsItemSelected(item));
+    }
+
+    private void saveCourse() {
+        String newTitle = title.getText().toString().trim();
+        Date start = new Date(startDate.getText().toString());
+        Date end = new Date(endDate.getText().toString());
+        String newStatus = status.getText().toString().trim();
+
+        Boolean valid = (newTitle.length() > 0 && status.length() > 0 && start.before(end));
+
+        if (valid){
+            Course c = course.getValue();
+            c.Title = newTitle;
+            c.Status = newStatus;
+            c.StartDate = start;
+            c.EndDate = end;
+
+            vm.SaveCourse(c);
+            Toast.makeText(getContext(), "Changes Saved", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initBindings() {
@@ -80,7 +107,7 @@ public class CourseMainFragment extends Fragment {
             status.setText(course.Status);
 
         });
-        isEditable.observe(this,(value) -> {
+        vm.isEditable().observe(this,(value) -> {
             if (value){
                 title.setInputType(InputType.TYPE_CLASS_TEXT);
                 startDate.setInputType(InputType.TYPE_CLASS_DATETIME);
@@ -103,10 +130,6 @@ public class CourseMainFragment extends Fragment {
         startDate = view.findViewById(R.id.course_detail_start);
         endDate = view.findViewById(R.id.course_detail_end);
         status = view.findViewById(R.id.course_detail_status);
-    }
-
-    public void SetEditable(LiveData<Boolean> editable){
-        this.isEditable = editable;
     }
 
 
