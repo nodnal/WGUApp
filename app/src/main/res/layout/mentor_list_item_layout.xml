@@ -6,16 +6,17 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/note_list_title"
+        android:id="@+id/mentor_list_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/note_list_note"
+        android:id="@+id/mentor_list_phone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -25,5 +26,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/note_list_title" />
+        app:layout_constraintTop_toBottomOf="@+id/mentor_list_name" />
+    <TextView
+        android:id="@+id/mentor_list_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="699dp"
+        android:ellipsize="end"
+        android:maxLines="4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mentor_list_phone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

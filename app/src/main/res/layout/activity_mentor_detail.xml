@@ -6,6 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.MentorDetailActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/mentor_detail_toolbar"
+        android:layout_width="431dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:minHeight="?attr/actionBarSize"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:logo="@drawable/ic_school_primarydark_24dp"
+        app:subtitleTextColor="@color/colorPrimary"
+        app:title="WGU"
+        app:titleMarginBottom="4dp"
+        app:titleMarginEnd="24dp"
+        app:titleMarginStart="24dp"
+        app:titleMarginTop="4dp"
+        app:titleTextColor="@color/colorPrimaryDark" />
+
     <EditText
         android:id="@+id/mentor_detail_email"
         android:layout_width="0dp"
@@ -14,11 +35,11 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
+        android:hint="mentor@example.com"
         android:inputType="textEmailAddress"
-        android:text="mentor@mentor.com"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mentor_detail_name" />
+        app:layout_constraintTop_toBottomOf="@+id/mentor_detail_last_name" />
 
     <EditText
         android:id="@+id/mentor_detail_phone"
@@ -29,7 +50,7 @@
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="phone"
-        android:text="555-555-5555"
+        android:hint="###-###-####"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,30 +58,33 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/mentor_detail_name"
+        android:id="@+id/mentor_detail_first_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
+        android:hint="First Name "
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mentor_detail_toolbar" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/mentor_detail_toolbar"
-        android:layout_width="409dp"
+    <EditText
+        android:id="@+id/mentor_detail_last_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="Last Name"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/mentor_detail_first_name" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

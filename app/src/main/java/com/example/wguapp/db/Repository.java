@@ -142,4 +142,15 @@ public class Repository {
     public void saveNote(Note note, MutableLiveData<Integer> noteId) {
         executor.execute(() -> noteId.postValue(Math.toIntExact(noteDao.insert(note))));
     }
+
+    public LiveData<Mentor> getMentor(MutableLiveData<Integer> mentorId) {
+        return Transformations.switchMap(mentorId, (id) -> Transformations.map(mentorDao.getAllMentors(), (mentors) -> mentors.stream()
+                .filter((n)-> n.getId() == id)
+                .findFirst()
+                .get()));
+    }
+
+    public void saveMentor(Mentor mentor, MutableLiveData<Integer> mentorId) {
+        executor.execute(() -> mentorId.postValue(Math.toIntExact(mentorDao.insert(mentor))));
+    }
 }
