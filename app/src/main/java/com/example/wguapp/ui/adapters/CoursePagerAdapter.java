@@ -1,8 +1,13 @@
-package com.example.wguapp.ui;
+package com.example.wguapp.ui.adapters;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.example.wguapp.ui.activities.fragments.CourseAssessmentFragment;
+import com.example.wguapp.ui.activities.fragments.CourseMainFragment;
+import com.example.wguapp.ui.activities.fragments.CourseMentorFragment;
+import com.example.wguapp.ui.activities.fragments.CourseNoteFragment;
 
 public class CoursePagerAdapter extends FragmentPagerAdapter {
     public CoursePagerAdapter(FragmentManager fm) {

@@ -1,4 +1,4 @@
-package com.example.wguapp.ui;
+package com.example.wguapp.ui.adapters;
 
 import androidx.recyclerview.widget.RecyclerView;
 

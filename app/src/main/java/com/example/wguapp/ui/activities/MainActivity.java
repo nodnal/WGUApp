@@ -1,4 +1,4 @@
-package com.example.wguapp;
+package com.example.wguapp.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,17 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.wguapp.ui.TermListActivity;
+import com.example.wguapp.R;
+import com.example.wguapp.ui.adapters.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.button1)
-    Button btn1;
+    private Button btn1;
 
 
     public void btnHandler(){
@@ -32,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        btn1 = findViewById(R.id.button1);
         mItems = new ArrayList<String>();
         mItems.add("hi");
         mItems.add("bye");

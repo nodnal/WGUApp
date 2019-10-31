@@ -1,4 +1,4 @@
-package com.example.wguapp.ui;
+package com.example.wguapp.ui.activities.fragments;
 
 
 import android.os.Bundle;
@@ -13,15 +13,15 @@ import com.example.wguapp.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CourseNoteFragment extends Fragment {
+public class CourseMentorFragment extends Fragment {
 
 
-    public CourseNoteFragment() {
+    public CourseMentorFragment() {
         // Required empty public constructor
     }
 
     public static Fragment newInstance() {
-        return new CourseNoteFragment();
+        return new CourseMentorFragment();
     }
 
 
@@ -29,7 +29,7 @@ public class CourseNoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_course_note, container, false);
+        return inflater.inflate(R.layout.fragment_course_mentor, container, false);
     }
 
 }

@@ -1,14 +1,16 @@
-package com.example.wguapp;
+package com.example.wguapp.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class NoteDetailActivity extends AppCompatActivity {
+import com.example.wguapp.R;
+
+public class MentorDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_note_detail);
+        setContentView(R.layout.activity_mentor_detail);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.wguapp;
+package com.example.wguapp.ui.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.wguapp.R;
 import com.example.wguapp.db.entity.Assessment;
-import com.example.wguapp.ui.OnViewHolderBindCallback;
 import com.example.wguapp.util.DateUtil;
 
 import java.util.List;
@@ -18,8 +18,7 @@ public class AssessmentListAdapter extends RecyclerView.Adapter<AssessmentListAd
 
     private List<Assessment> assessments;
 
-
-    public OnViewHolderBindCallback OnViewHolderBind;
+    private OnViewHolderBindCallback OnViewHolderBind;
 
     public AssessmentListAdapter(OnViewHolderBindCallback cb){
         this.OnViewHolderBind = cb;
@@ -29,8 +28,7 @@ public class AssessmentListAdapter extends RecyclerView.Adapter<AssessmentListAd
     @Override
     public AssessmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.assessment_list_item_layout, parent, false);
-        AssessmentViewHolder holder = new AssessmentViewHolder(view);
-        return holder;
+        return new AssessmentViewHolder(view);
     }
 
     @Override

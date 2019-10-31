@@ -14,6 +14,7 @@ import com.example.wguapp.db.entity.Assessment;
 import java.util.Date;
 
 public class AssessmentDetailViewModel extends AndroidViewModel {
+
     private MediatorLiveData<Assessment> assessment;
     private Repository repo;
     private MutableLiveData<Integer> assessmentId;
@@ -28,18 +29,16 @@ public class AssessmentDetailViewModel extends AndroidViewModel {
         assessmentId = new MutableLiveData<>();
         courseId = new MutableLiveData<>();
         assessment = new MediatorLiveData<>();
+
         assessment.addSource(repo.getAssessment(assessmentId), (a) -> {
             assessment.setValue(a);
             editable.setValue(false);
         });
         assessment.addSource(courseId, (id) ->{
-            Assessment a = new Assessment("", "", new Date(),id);
+            Assessment a = new Assessment("", "", new Date(), false, id);
             assessment.setValue(a);
             editable.setValue(true);
         } );
-
-
-
 
     }
 
@@ -58,9 +57,7 @@ public class AssessmentDetailViewModel extends AndroidViewModel {
 
     public void saveAssessment(Assessment a){
         repo.saveAssessment(a, assessmentId);
-
         }
-
 
     public LiveData<Boolean> isEditable(){
         return editable;

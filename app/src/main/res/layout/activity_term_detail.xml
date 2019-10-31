@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.TermDetailActivity"
+    tools:context=".ui.activities.TermDetailActivity"
     android:fitsSystemWindows="true">
 
     <TextView
@@ -23,11 +23,12 @@
         android:layout_height="45dp"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:hint="Course Title"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/term_detail_toolbar" />
 
     <TextView
         android:id="@+id/textView"
@@ -45,6 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:ems="10"
+        android:hint="mm/dd/yyyy"
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:hint="@string/date_format_hint"
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,14 +76,24 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/term_detail_toolbar"
         android:layout_width="431dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorAccent"
         android:minHeight="?attr/actionBarSize"
+        android:paddingLeft="4dp"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:logo="@drawable/ic_school_primarydark_24dp"
+        app:subtitleTextColor="@color/colorPrimary"
+        app:title="WGU"
+        app:titleMarginBottom="4dp"
+        app:titleMarginEnd="24dp"
+        app:titleMarginStart="24dp"
+        app:titleMarginTop="4dp"
+        app:titleTextColor="@color/colorPrimaryDark" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_course_fab"

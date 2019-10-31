@@ -1,4 +1,4 @@
-package com.example.wguapp.ui;
+package com.example.wguapp.ui.activities.fragments;
 
 
 import android.content.Intent;
@@ -15,67 +15,49 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.wguapp.AssessmentDetailActivity;
-import com.example.wguapp.AssessmentListAdapter;
+import com.example.wguapp.ui.adapters.OnViewHolderBindCallback;
+import com.example.wguapp.ui.activities.NoteDetailActivity;
 import com.example.wguapp.R;
-import com.example.wguapp.db.entity.Assessment;
 import com.example.wguapp.db.entity.Course;
+import com.example.wguapp.db.entity.Note;
+import com.example.wguapp.ui.adapters.NoteListAdapter;
 import com.example.wguapp.viewmodel.CourseDetailViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class CourseAssessmentFragment extends Fragment implements OnViewHolderBindCallback{
+public class CourseNoteFragment extends Fragment  implements OnViewHolderBindCallback {
 
-    private FloatingActionButton addAssessmentBtn;
+    private FloatingActionButton addNoteBtn;
     private RecyclerView listView;
-    private AssessmentListAdapter adapter;
+    private NoteListAdapter adapter;
     private Course course;
-    private LiveData<List<Assessment>> assessments;
+    private LiveData<List<Note>> notes;
     private CourseDetailViewModel vm;
 
-    public CourseAssessmentFragment() {
+    public CourseNoteFragment() {
         // Required empty public constructor
     }
 
     public static Fragment newInstance() {
-        return new CourseAssessmentFragment();
+        return new CourseNoteFragment();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_course_assessment, container, false);
+        View view = inflater.inflate(R.layout.fragment_course_note, container, false);
         initUI(view);
-
         return view;
     }
 
     private void initUI(View view) {
-        listView = view.findViewById(R.id.course_detail_assesment_list);
-        adapter = new AssessmentListAdapter(this);
+        listView = view.findViewById(R.id.course_detail_note_list);
+        adapter = new NoteListAdapter(this);
         listView.setAdapter(adapter);
         listView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        addAssessmentBtn = view.findViewById(R.id.course_detail_assessment_add_fab);
-        addAssessmentBtn.setOnClickListener((btn) -> addAssessment());
-
-
-    }
-
-    private void addAssessment() {
-
-        if (course != null && course.getId() != 0) {
-            Intent intent = new Intent(this.getContext(), AssessmentDetailActivity.class);
-            intent.putExtra("course_id", course.getId());
-            startActivity(intent);
-
-        }else{
-            Log.e("CourseAssesmentFragment","no course selected."+course.toString());
-        }
+        addNoteBtn = view.findViewById(R.id.course_detail_note_add_fab);
+        addNoteBtn.setOnClickListener((btn) -> addNote());
     }
 
     @Override
@@ -86,17 +68,28 @@ public class CourseAssessmentFragment extends Fragment implements OnViewHolderBi
 
     private void initViewModel() {
         vm = ViewModelProviders.of(getActivity()).get(CourseDetailViewModel.class);
-        assessments = vm.getAssessments();
+        notes = vm.getNotes();
         vm.getCourse().observe(getViewLifecycleOwner(),(c) -> course = c);
-        assessments.observe(getViewLifecycleOwner(), a -> adapter.setAssessments(a));
+        notes.observe(getViewLifecycleOwner(), a -> adapter.setNotes(a));
     }
 
     @Override
     public void onViewHolderBind(RecyclerView.ViewHolder viewHolder, int position) {
         viewHolder.itemView.setOnClickListener((view) -> {
-            Intent intent = new Intent(this.getContext(), AssessmentDetailActivity.class);
-            intent.putExtra("assessment_id", assessments.getValue().get(viewHolder.getAdapterPosition()).getId());
+            Intent intent = new Intent(this.getContext(), NoteDetailActivity.class);
+            intent.putExtra("note_id", notes.getValue().get(viewHolder.getAdapterPosition()).getId());
             startActivity(intent);
         });
+    }
+    private void addNote() {
+
+        if (course != null && course.getId() != 0) {
+            Intent intent = new Intent(this.getContext(), NoteDetailActivity.class);
+            intent.putExtra("course_id", course.getId());
+            startActivity(intent);
+
+        }else{
+            Log.e("CourseAssesmentFragment","no course selected."+course.toString());
+        }
     }
 }

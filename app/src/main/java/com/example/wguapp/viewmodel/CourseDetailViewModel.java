@@ -43,7 +43,7 @@ public class CourseDetailViewModel extends AndroidViewModel {
         });
 
         course.addSource(termId, (id) -> {
-            course.setValue(new Course("", new Date(), new Date(), "", id));
+            course.setValue(new Course("", new Date(), new Date(), "", false, false, id));
             editable.setValue(true);
         });
         assessments = Transformations.switchMap(courseId, (id) -> Transformations.map(repo.getAllAssessments(), (list) -> list.stream()

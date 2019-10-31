@@ -11,15 +11,32 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/course_detail_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"></androidx.appcompat.widget.Toolbar>
+            android:layout_width="431dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:minHeight="?attr/actionBarSize"
+            android:paddingLeft="4dp"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:logo="@drawable/ic_school_primarydark_24dp"
+            app:subtitleTextColor="@color/colorPrimary"
+            app:title="WGU"
+            app:titleMarginBottom="4dp"
+            app:titleMarginEnd="24dp"
+            app:titleMarginStart="24dp"
+            app:titleMarginTop="4dp"
+            app:titleTextColor="@color/colorPrimaryDark" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/course_detail_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:tabMode="scrollable" />
+            android:background="@color/colorPrimary"
+            app:tabIndicatorColor="@color/colorPrimaryDark"
+            app:tabMode="scrollable"
+            app:tabTextColor="@color/colorPrimaryDark" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

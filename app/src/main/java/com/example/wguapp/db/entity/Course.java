@@ -14,20 +14,28 @@ public class Course {
     private int id;
     @ColumnInfo(name = "term_id")
     private int termId;
+    @ColumnInfo(name = "title")
     public String Title;
     @ColumnInfo(name = "start_date")
     public Date StartDate;
     @ColumnInfo(name = "end_date")
     public Date EndDate;
+    @ColumnInfo(name = "status")
     public String Status; //TODO: add enum
+    @ColumnInfo(name = "start_alert")
+    public boolean StartAlert;
+    @ColumnInfo(name = "end_alert")
+    public boolean EndAlert;
 
     public Course(){}
 
-    public Course(String title, Date startDate, Date endDate, String status, int termId) {
+    public Course(String title, Date startDate, Date endDate, String status, boolean startAlert, boolean endAlert, int termId) {
         this.Title = title;
         this.StartDate = startDate;
         this.EndDate = endDate;
         this.Status = status;
+        this.StartAlert = startAlert;
+        this.EndAlert = endAlert;
         this.termId = termId;
     }
 

@@ -1,4 +1,4 @@
-package com.example.wguapp.ui;
+package com.example.wguapp.ui.activities.fragments;
 
 import android.os.Bundle;
 import android.text.InputType;
@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,6 +28,8 @@ public class CourseMainFragment extends Fragment {
     private EditText startDate;
     private EditText endDate;
     private EditText status;
+    private CheckBox startAlert;
+    private CheckBox endAlert;
 
     private CourseDetailViewModel vm;
     private LiveData<Course> course;
@@ -84,6 +87,9 @@ public class CourseMainFragment extends Fragment {
         Date start = new Date(startDate.getText().toString());
         Date end = new Date(endDate.getText().toString());
         String newStatus = status.getText().toString().trim();
+        boolean newStartAlert = startAlert.isChecked();
+        boolean newEndAlert = endAlert.isChecked();
+
 
         Boolean valid = (newTitle.length() > 0 && status.length() > 0 && start.before(end));
 
@@ -93,6 +99,8 @@ public class CourseMainFragment extends Fragment {
             c.Status = newStatus;
             c.StartDate = start;
             c.EndDate = end;
+            c.StartAlert = newStartAlert;
+            c.EndAlert = newEndAlert;
 
             vm.SaveCourse(c);
             Toast.makeText(getContext(), "Changes Saved", Toast.LENGTH_SHORT).show();
@@ -105,15 +113,22 @@ public class CourseMainFragment extends Fragment {
             startDate.setText(DateUtil.toString(course.StartDate));
             endDate.setText(DateUtil.toString(course.EndDate));
             status.setText(course.Status);
+            startAlert.setChecked(course.StartAlert);
+            endAlert.setChecked(course.EndAlert);
 
         });
         vm.isEditable().observe(this,(value) -> {
+            startAlert.setClickable(value);
+            endAlert.setClickable(value);
             if (value){
                 title.setInputType(InputType.TYPE_CLASS_TEXT);
+                status.setInputType(InputType.TYPE_CLASS_TEXT);
                 startDate.setInputType(InputType.TYPE_CLASS_DATETIME);
                 endDate.setInputType(InputType.TYPE_CLASS_DATETIME);
+
             }else{
                 title.setInputType(InputType.TYPE_NULL);
+                status.setInputType(InputType.TYPE_NULL);
                 startDate.setInputType(InputType.TYPE_NULL);
                 endDate.setInputType(InputType.TYPE_NULL);
             }
@@ -130,6 +145,8 @@ public class CourseMainFragment extends Fragment {
         startDate = view.findViewById(R.id.course_detail_start);
         endDate = view.findViewById(R.id.course_detail_end);
         status = view.findViewById(R.id.course_detail_status);
+        startAlert = view.findViewById(R.id.courese_detail_start_alert);
+        endAlert = view.findViewById(R.id.course_detail_end_alert);
     }
 
 

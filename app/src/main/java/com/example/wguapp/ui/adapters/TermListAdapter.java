@@ -1,4 +1,4 @@
-package com.example.wguapp;
+package com.example.wguapp.ui.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,8 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.wguapp.R;
 import com.example.wguapp.db.entity.Term;
-import com.example.wguapp.ui.TermDetailActivity;
+import com.example.wguapp.ui.activities.TermDetailActivity;
 import com.example.wguapp.util.DateUtil;
 
 import java.util.List;

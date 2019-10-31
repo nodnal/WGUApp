@@ -6,7 +6,7 @@
     <item
         android:id="@+id/action_edit"
         app:showAsAction="always"
-        android:icon="@drawable/ic_edit_black_24dp"
+        android:icon="@drawable/ic_edit_primarydark_24dp"
         android:title="Edit"/>
 
     </group>
@@ -14,7 +14,7 @@
         <item
         android:id="@+id/action_save"
         app:showAsAction="always"
-        android:icon="@drawable/ic_check_black_24dp"
+        android:icon="@drawable/ic_check_primarydark_24dp"
         android:title="Save"/>
     </group>
 </menu>

@@ -14,18 +14,23 @@ public class Assessment {
     private int id;
     @ColumnInfo(name = "course_id")
     private int courseId;
+    @ColumnInfo(name = "title")
     public String Title;
+    @ColumnInfo(name = "type")
     public String Type; //TODO: add enum for objective, performance, maybe practice
     @ColumnInfo(name = "goal_date")
     public Date GoalDate;
+    @ColumnInfo(name = "alert")
+    public boolean Alert;
 
     public Assessment(){}
 
-    public Assessment(String title, String type, Date goalDate, int courseId) {
+    public Assessment(String title, String type, Date goalDate, boolean alert, int courseId) {
         this.Title = title;
         this.Type = type;
         this.GoalDate = goalDate;
         this.courseId = courseId;
+        this.Alert = alert;
     }
 
     public void setId(int id) {

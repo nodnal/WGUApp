@@ -15,7 +15,7 @@ import java.util.List;
 public interface CourseMentorDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(CourseMentorJoin join);
+    long insert(CourseMentorJoin join);
 
     @Delete
     void delete(CourseMentorJoin join);

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AssessmentDetailActivity">
+    tools:context=".ui.activities.AssessmentDetailActivity">
 
     <EditText
         android:id="@+id/assessment_detail_title"
@@ -22,39 +22,69 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/assessment_detail_toolbar"
-        android:layout_width="409dp"
+        android:layout_width="431dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorAccent"
         android:minHeight="?attr/actionBarSize"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:logo="@drawable/ic_school_primarydark_24dp"
+        app:subtitleTextColor="@color/colorPrimary"
+        app:title="WGU"
+        app:titleMarginBottom="4dp"
+        app:titleMarginEnd="24dp"
+        app:titleMarginStart="24dp"
+        app:titleMarginTop="4dp"
+        app:titleTextColor="@color/colorPrimaryDark" />
 
     <EditText
         android:id="@+id/assessment_detail_goal_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="72dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assessment_detail_title" />
+        app:layout_constraintStart_toStartOf="@+id/assessment_detail_type"
+        app:layout_constraintTop_toBottomOf="@+id/assessment_detail_type" />
 
     <CheckBox
         android:id="@+id/assessment_detail_alert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:text="Set Alert?"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/assessment_detail_goal_date"
         app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/assessment_detail_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assessment_detail_title" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Goal Date:"
+        app:layout_constraintBottom_toBottomOf="@+id/assessment_detail_goal_date"
+        app:layout_constraintEnd_toStartOf="@+id/assessment_detail_goal_date"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/assessment_detail_goal_date" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.wguapp.ui;
+package com.example.wguapp.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.wguapp.CourseListAdapter;
+import com.example.wguapp.ui.adapters.OnViewHolderBindCallback;
+import com.example.wguapp.ui.adapters.CourseListAdapter;
 import com.example.wguapp.R;
 import com.example.wguapp.db.entity.Course;
 import com.example.wguapp.db.entity.Term;
@@ -48,7 +49,7 @@ public class TermDetailActivity extends AppCompatActivity implements OnViewHolde
     public TextView endDate;
     @BindView(R.id.term_detail_course_list)
     public RecyclerView CourseList;
-    @BindView(R.id.toolbar)
+    @BindView(R.id.term_detail_toolbar)
     public Toolbar toolbar;
     @BindView(R.id.add_course_fab)
     public FloatingActionButton addCourseBtn;
@@ -138,6 +139,8 @@ public class TermDetailActivity extends AppCompatActivity implements OnViewHolde
     }
 
     private void initUI() {
+        toolbar = findViewById(R.id.term_detail_toolbar);
+        toolbar.setTitle("WGU -> Term Details");
         setSupportActionBar(toolbar);
         courseAdapter = new CourseListAdapter(this);
         CourseList.setAdapter(courseAdapter);

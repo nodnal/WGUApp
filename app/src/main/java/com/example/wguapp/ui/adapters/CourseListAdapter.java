@@ -1,4 +1,4 @@
-package com.example.wguapp;
+package com.example.wguapp.ui.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.wguapp.R;
 import com.example.wguapp.db.entity.Course;
-import com.example.wguapp.ui.OnViewHolderBindCallback;
 import com.example.wguapp.util.DateUtil;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CourseListAdapter extends RecyclerView.Adapter<com.example.wguapp.CourseListAdapter.CourseViewHolder>{
+public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.CourseViewHolder>{
 
 
         private List<Course> courses;

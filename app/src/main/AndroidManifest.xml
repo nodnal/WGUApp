@@ -9,18 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".AssessmentDetailActivity"></activity>
-        <activity android:name=".MentorDetailActivity" />
-        <activity android:name=".NoteDetailActivity" />
-        <activity android:name=".ui.CourseDetailActivity" />
-        <activity android:name=".ui.TermDetailActivity" />
-        <activity android:name=".ui.TermListActivity" />
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".ui.activities.AssessmentDetailActivity"></activity>
+        <activity android:name=".ui.activities.MentorDetailActivity" />
+        <activity android:name=".ui.activities.NoteDetailActivity" />
+        <activity android:name=".ui.activities.CourseDetailActivity" />
+        <activity android:name=".ui.activities.TermDetailActivity" />
+        <activity android:name=".ui.activities.TermListActivity" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <activity android:name=".ui.activities.MainActivity">
+
         </activity>
     </application>
 

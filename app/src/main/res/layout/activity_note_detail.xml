@@ -4,18 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NoteDetailActivity">
+    tools:context=".ui.activities.NoteDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/note_detail_toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="431dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorAccent"
         android:minHeight="?attr/actionBarSize"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:logo="@drawable/ic_school_primarydark_24dp"
+        app:subtitleTextColor="@color/colorPrimary"
+        app:title="WGU"
+        app:titleMarginBottom="4dp"
+        app:titleMarginEnd="24dp"
+        app:titleMarginStart="24dp"
+        app:titleMarginTop="4dp"
+        app:titleTextColor="@color/colorPrimaryDark" />
 
     <EditText
         android:id="@+id/note_detail_note"
@@ -25,7 +35,7 @@
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:text="Write Note Here..."
+        android:hint="Write Note Here..."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +48,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Title"
+        android:hint="Title..."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note_detail_toolbar" />
@@ -56,5 +66,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@drawable/ic_share_primarydark_24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
