@@ -98,8 +98,8 @@ public class Repository {
         return termDao.getTerm(termId);
     }
 
-    public LiveData<Course> getCourse(Integer id) {
-        return courseDao.getCourse(id);
+    public void getCourse(Integer id, MutableLiveData<Course> course) {
+        executor.execute(() -> course.postValue(courseDao.getCourse(id)));
     }
 
     public LiveData<List<Mentor>> getAllAssignedMentorsForCourse(LiveData<Integer> courseId) {
@@ -125,7 +125,7 @@ public class Repository {
         return Transformations.switchMap(assessmentId, (id) -> Transformations.map(assessmentDao.getAssessments(), (assessments) -> assessments.stream()
                 .filter((a)-> a.getId() == id)
                 .findFirst()
-                .get()));
+                .orElseGet(Assessment::new)));
     }
 
     public void saveAssessment(Assessment assessment, MutableLiveData<Integer> assessmentId) {
@@ -136,7 +136,8 @@ public class Repository {
         return Transformations.switchMap(noteId, (id) -> Transformations.map(noteDao.getNotes(), (notes) -> notes.stream()
                 .filter((n)-> n.getId() == id)
                 .findFirst()
-                .get()));
+                .orElseGet(Note::new)
+                ));
     }
 
     public void saveNote(Note note, MutableLiveData<Integer> noteId) {
@@ -147,10 +148,41 @@ public class Repository {
         return Transformations.switchMap(mentorId, (id) -> Transformations.map(mentorDao.getAllMentors(), (mentors) -> mentors.stream()
                 .filter((n)-> n.getId() == id)
                 .findFirst()
-                .get()));
+                .orElseGet(Mentor::new)));
     }
 
-    public void saveMentor(Mentor mentor, MutableLiveData<Integer> mentorId) {
+    public void saveMentor(Mentor mentor, MutableLiveData<Integer> mentorId, MutableLiveData<Integer> courseId) {
         executor.execute(() -> mentorId.postValue(Math.toIntExact(mentorDao.insert(mentor))));
+    }
+
+    public void saveNewMentor(Mentor mentor, int courseId, MutableLiveData<Integer> mentorId) {
+        executor.execute(() -> {
+            int mId = Math.toIntExact(mentorDao.insert(mentor));
+            CourseMentorJoin join = new CourseMentorJoin();
+            join.setCourseId(courseId);
+            join.setMentorId(mId);
+            courseMentorDao.insert(join);
+            mentorId.postValue(mId);
+        });
+    }
+
+    public void deleteTerm(Term term) {
+        executor.execute(() -> termDao.delete(term));
+    }
+
+    public void deleteCourse(Course course) {
+        executor.execute(() -> courseDao.delete(course));
+    }
+
+    public void deleteNote(Note note){
+        executor.execute(() -> noteDao.delete(note));
+    }
+
+    public void deleteAssessment(Assessment assessment){
+        executor.execute(() -> assessmentDao.delete(assessment));
+    }
+
+    public void deleteCourseMentorJoin(CourseMentorJoin courseMentorJoin){
+        executor.execute(() -> courseMentorDao.delete(courseMentorJoin));
     }
 }

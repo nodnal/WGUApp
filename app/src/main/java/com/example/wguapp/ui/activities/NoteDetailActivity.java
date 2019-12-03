@@ -24,7 +24,9 @@ public class NoteDetailActivity extends AppCompatActivity {
 
     private NoteDetailViewModel vm;
     private LiveData<Note> note;
+    private LiveData<Integer> courseId;
     private Note currentNote;
+    private int currentCourseId;
 
     private EditText title;
     private EditText noteText;
@@ -51,6 +53,7 @@ public class NoteDetailActivity extends AppCompatActivity {
     private void initViewModel() {
         vm = ViewModelProviders.of(this).get(NoteDetailViewModel.class);
         note = vm.getNote();
+        courseId = vm.getCourseId();
     }
 
     private void initUI() {
@@ -100,6 +103,7 @@ public class NoteDetailActivity extends AppCompatActivity {
                 shareBtn.show();
             }
         });
+        courseId.observe(this, (id) -> currentCourseId = id);
 
     }
 
@@ -120,8 +124,16 @@ public class NoteDetailActivity extends AppCompatActivity {
             case R.id.action_save:
                 saveNote();
                 return (true);
+            case R.id.action_delete:
+                deleteNote();
+                return (true);
         }
         return(super.onOptionsItemSelected(item));
+    }
+
+    private void deleteNote() {
+        vm.deleteNote(currentNote, currentCourseId);
+        finish();
     }
 
     private void saveNote() {

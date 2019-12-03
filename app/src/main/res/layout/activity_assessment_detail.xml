@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.AssessmentDetailActivity">
 
-    <EditText
-        android:id="@+id/assessment_detail_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assessment_detail_toolbar" />
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/assessment_detail_toolbar"
         android:layout_width="431dp"
@@ -42,6 +28,20 @@
         app:titleTextColor="@color/colorPrimaryDark" />
 
     <EditText
+        android:id="@+id/assessment_detail_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Assessment Title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assessment_detail_toolbar" />
+
+    <EditText
         android:id="@+id/assessment_detail_goal_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -49,6 +49,7 @@
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="date"
+        android:hint="@string/date_format_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/assessment_detail_type"
         app:layout_constraintTop_toBottomOf="@+id/assessment_detail_type" />
@@ -72,7 +73,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Type"
+        android:hint="Performance or Objective"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/assessment_detail_title" />

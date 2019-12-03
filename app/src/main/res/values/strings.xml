@@ -8,4 +8,6 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="date_format_hint">mm/dd/yyyy</string>
+    <string name="channel_name">wgu_app_channel</string>
+    <string name="channel_description">Notification Channel for WGU App.</string>
 </resources>

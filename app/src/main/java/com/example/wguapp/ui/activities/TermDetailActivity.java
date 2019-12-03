@@ -25,6 +25,7 @@ import com.example.wguapp.util.DateUtil;
 import com.example.wguapp.viewmodel.TermDetailViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +54,8 @@ public class TermDetailActivity extends AppCompatActivity implements OnViewHolde
     public Toolbar toolbar;
     @BindView(R.id.add_course_fab)
     public FloatingActionButton addCourseBtn;
+    private Term currentTerm;
+    private ArrayList<Course> currentCourses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,7 @@ public class TermDetailActivity extends AppCompatActivity implements OnViewHolde
         setContentView(R.layout.activity_term_detail);
         ButterKnife.bind(this);
         vm = ViewModelProviders.of(this).get(TermDetailViewModel.class);
+        currentCourses = new ArrayList<>();
         initViewModelBindings();
         initUI();
 
@@ -69,8 +73,6 @@ public class TermDetailActivity extends AppCompatActivity implements OnViewHolde
         }else{
             isEditable.postValue(true);
         }
-
-
     }
 
     private void initViewModelBindings() {
@@ -78,24 +80,38 @@ public class TermDetailActivity extends AppCompatActivity implements OnViewHolde
 
         term = vm.getTerm();
         term.observe(this, term -> {
-            title.setText(term.Title);
-            startDate.setText(DateUtil.toString(term.StartDate));
-            endDate.setText(DateUtil.toString(term.EndDate));
+            if (term == null) {
+                title.setText("");
+                startDate.setText("");
+                endDate.setText("");
+            }else {
+                currentTerm = term;
+                title.setText(term.Title);
+                startDate.setText(DateUtil.toString(term.StartDate));
+                endDate.setText(DateUtil.toString(term.EndDate));
+            }
         });
 
         courses = vm.getCourses();
-        courses.observe(this, courses -> courseAdapter.setCourses(courses));
+        courses.observe(this, courses -> {
+            courseAdapter.setCourses(courses);
+            currentCourses.clear();
+            currentCourses.addAll(courses);
+        });
 
         isEditable.observe(this, editable -> {
             if (editable){
+
                 toolbar.getMenu().setGroupVisible(R.id.group_save, true);
                 toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
+                toolbar.getMenu().setGroupVisible(R.id.group_delete, false);
                 title.setInputType(InputType.TYPE_CLASS_TEXT);
                 startDate.setInputType(InputType.TYPE_CLASS_DATETIME);
                 endDate.setInputType(InputType.TYPE_CLASS_DATETIME);
             }else{
                 toolbar.getMenu().setGroupVisible(R.id.group_save, false);
                 toolbar.getMenu().setGroupVisible(R.id.group_edit, true);
+                toolbar.getMenu().setGroupVisible(R.id.group_delete, true);
                 title.setInputType(InputType.TYPE_NULL);
                 startDate.setInputType(InputType.TYPE_NULL);
                 endDate.setInputType(InputType.TYPE_NULL);
@@ -120,9 +136,21 @@ public class TermDetailActivity extends AppCompatActivity implements OnViewHolde
         case R.id.action_save:
             SaveTerm();
             return(true);
+        case R.id.action_delete:
+            DeleteTerm();
+            return(true);
 
     }
         return(super.onOptionsItemSelected(item));
+    }
+
+    private void DeleteTerm() {
+        if(currentCourses.isEmpty()){
+            vm.DeleteTerm(currentTerm);
+            finish();
+        }else{
+            Toast.makeText(this, "Cannot Delete Term with Existing Courses", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

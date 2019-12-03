@@ -9,6 +9,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.wguapp.db.Repository;
+import com.example.wguapp.db.entity.CourseMentorJoin;
 import com.example.wguapp.db.entity.Mentor;
 
 public class MentorDetailViewModel extends AndroidViewModel {
@@ -51,8 +52,11 @@ public class MentorDetailViewModel extends AndroidViewModel {
     }
 
     public void saveMentor(Mentor m){
+        repo.saveMentor(m, mentorId, courseId);
+    }
 
-        repo.saveMentor(m, mentorId);
+    public void saveNewMentor(Mentor m, int courseId){
+        repo.saveNewMentor(m, courseId, mentorId);
     }
 
     public LiveData<Boolean> isEditable(){
@@ -61,5 +65,16 @@ public class MentorDetailViewModel extends AndroidViewModel {
 
     public void setEditable(boolean isEditable){
         editable.setValue(isEditable);
+    }
+
+    public LiveData<Integer> getCourseId() {
+        return courseId;
+    }
+
+    public void deleteMentor(Mentor currentMentor, int currentCourseId) {
+        CourseMentorJoin cmj = new CourseMentorJoin();
+        cmj.setMentorId(currentMentor.getId());
+        cmj.setCourseId(currentCourseId);
+        repo.deleteCourseMentorJoin(cmj);
     }
 }

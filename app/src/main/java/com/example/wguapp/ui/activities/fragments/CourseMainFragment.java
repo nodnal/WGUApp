@@ -33,6 +33,7 @@ public class CourseMainFragment extends Fragment {
 
     private CourseDetailViewModel vm;
     private LiveData<Course> course;
+    private Course currentCourse;
 
     public CourseMainFragment() {
         // Required empty public constructor
@@ -77,9 +78,17 @@ public class CourseMainFragment extends Fragment {
                 vm.setEditable(false);
                 saveCourse();
             return(true);
+        case R.id.action_delete:
+            deleteCourse();
+            return(true);
 
     }
         return(super.onOptionsItemSelected(item));
+    }
+
+    private void deleteCourse() {
+        vm.deleteCourse(currentCourse);
+        this.getActivity().finish();
     }
 
     private void saveCourse() {
@@ -94,7 +103,7 @@ public class CourseMainFragment extends Fragment {
         Boolean valid = (newTitle.length() > 0 && status.length() > 0 && start.before(end));
 
         if (valid){
-            Course c = course.getValue();
+            Course c = currentCourse;
             c.Title = newTitle;
             c.Status = newStatus;
             c.StartDate = start;
@@ -115,6 +124,7 @@ public class CourseMainFragment extends Fragment {
             status.setText(course.Status);
             startAlert.setChecked(course.StartAlert);
             endAlert.setChecked(course.EndAlert);
+            currentCourse = course;
 
         });
         vm.isEditable().observe(this,(value) -> {

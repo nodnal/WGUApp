@@ -31,8 +31,11 @@ public class AssessmentDetailViewModel extends AndroidViewModel {
         assessment = new MediatorLiveData<>();
 
         assessment.addSource(repo.getAssessment(assessmentId), (a) -> {
-            assessment.setValue(a);
-            editable.setValue(false);
+            if (a != null) {
+                assessment.setValue(a);
+                editable.setValue(false);
+            }
+
         });
         assessment.addSource(courseId, (id) ->{
             Assessment a = new Assessment("", "", new Date(), false, id);
@@ -67,4 +70,12 @@ public class AssessmentDetailViewModel extends AndroidViewModel {
         editable.setValue(isEditable);
     }
 
+    public void deleteAssessment(Assessment assessment, int cId) {
+        loadNewAssessment(cId);
+        repo.deleteAssessment(assessment);
+    }
+
+    public LiveData<Integer> getCourseId() {
+        return courseId;
+    }
 }

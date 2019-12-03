@@ -17,4 +17,11 @@
         android:icon="@drawable/ic_check_primarydark_24dp"
         android:title="Save"/>
     </group>
+    <group android:id="@+id/group_delete">
+        <item
+            android:id="@+id/action_delete"
+            app:showAsAction="always"
+            android:icon="@drawable/ic_delete_primarydark_24dp"
+            android:title="Save"/>
+    </group>
 </menu>

@@ -21,7 +21,7 @@ import com.example.wguapp.db.entity.Mentor;
 import com.example.wguapp.db.entity.Note;
 import com.example.wguapp.db.entity.Term;
 
-@Database(entities = {Term.class, Course.class, Assessment.class, Note.class, Mentor.class, CourseMentorJoin.class}, version = 6, exportSchema = false)
+@Database(entities = {Term.class, Course.class, Assessment.class, Note.class, Mentor.class, CourseMentorJoin.class}, version = 7, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 

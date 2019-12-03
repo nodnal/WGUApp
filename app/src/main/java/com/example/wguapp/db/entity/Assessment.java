@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = "assessments",indices = {@Index("course_id")}, foreignKeys = @ForeignKey(entity = Course.class, parentColumns = "id", childColumns = "course_id", onDelete = ForeignKey.CASCADE))
+@Entity(tableName = "assessments",indices = {@Index("course_id")}, foreignKeys = @ForeignKey(entity = Course.class, parentColumns = "id", childColumns = "course_id", onDelete = ForeignKey.CASCADE, onUpdate = ForeignKey.CASCADE))
 public class Assessment {
     @PrimaryKey(autoGenerate = true)
     private int id;

@@ -2,6 +2,7 @@ package com.example.wguapp.db.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -20,5 +21,8 @@ public interface CourseDao {
     LiveData<List<Course>> getCourses();
 
     @Query("Select * FROM courses WHERE id = :id")
-    LiveData<Course> getCourse(Integer id);
+    Course getCourse(Integer id);
+
+    @Delete
+    void delete(Course course);
 }

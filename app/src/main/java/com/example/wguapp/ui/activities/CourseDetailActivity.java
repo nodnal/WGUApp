@@ -73,10 +73,12 @@ public class CourseDetailActivity extends AppCompatActivity {
             if (value) {
                 toolbar.getMenu().setGroupVisible(R.id.group_save, true);
                 toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
+                toolbar.getMenu().setGroupVisible(R.id.group_delete, false);
 
             } else {
                 toolbar.getMenu().setGroupVisible(R.id.group_save, false);
                 toolbar.getMenu().setGroupVisible(R.id.group_edit, true);
+                toolbar.getMenu().setGroupVisible(R.id.group_delete, true);
             }
         });
     }
@@ -85,6 +87,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         vm = ViewModelProviders.of(this).get(CourseDetailViewModel.class);
         course = vm.getCourse();
         course.observe(this,(c)-> {});
+        vm.getRepoCourse().observe(this, (c) -> {});
         assessments = vm.getAssessments();
         notes = vm.getNotes();
         mentors = vm.getMentors();
@@ -98,17 +101,4 @@ public class CourseDetailActivity extends AppCompatActivity {
         vm.setEditable(editable);
         return true;
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
-//        case R.id.action_edit:
-//            vm.setEditable(true);
-//            return(true);
-//        case R.id.action_save:
-//            SaveCourse();
-//            return(true);
-//
-//    }
-//        return(super.onOptionsItemSelected(item));
-//    }
 }

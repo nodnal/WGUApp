@@ -2,12 +2,12 @@ package com.example.wguapp.db.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.wguapp.db.entity.Assessment;
-import com.example.wguapp.db.entity.Term;
 
 import java.util.List;
 
@@ -19,4 +19,7 @@ public interface AssessmentDao {
 
     @Query("SELECT * FROM assessments ORDER BY goal_date")
     LiveData<List<Assessment>> getAssessments();
+
+    @Delete
+    void delete(Assessment assessment);
 }

@@ -2,6 +2,7 @@ package com.example.wguapp.db.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -18,4 +19,7 @@ public interface NoteDao {
 
     @Query("SELECT * FROM notes ORDER BY title")
     LiveData<List<Note>> getNotes();
+
+    @Delete
+    void delete(Note note);
 }

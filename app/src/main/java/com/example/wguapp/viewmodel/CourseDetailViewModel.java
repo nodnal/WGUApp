@@ -22,10 +22,11 @@ import java.util.stream.Collectors;
 public class CourseDetailViewModel extends AndroidViewModel {
     private MutableLiveData<Integer> courseId;
     private MutableLiveData<Integer> termId;
-    private MediatorLiveData<Course> course;
+    private MutableLiveData<Course> course;
     private LiveData<List<Assessment>> assessments;
     private LiveData<List<Mentor>> mentors;
     private LiveData<List<Note>> notes;
+    private MediatorLiveData<Course> repoCourse;
     private MutableLiveData<Boolean> editable;
     private Repository repo;
 
@@ -36,28 +37,33 @@ public class CourseDetailViewModel extends AndroidViewModel {
         courseId = new MutableLiveData<>();
         termId = new MutableLiveData<>();
 
-        course = new MediatorLiveData<>();
-        course.addSource(Transformations.switchMap(courseId, (id) -> repo.getCourse(id)),(c) -> {
-            editable.setValue(false);
-            course.setValue(c);
+        course = new MutableLiveData<>();
+        editable = new MutableLiveData<>();
+        repoCourse = new MediatorLiveData<>();
+        repoCourse.addSource(courseId, (id) -> {
+            if (id != 0) {
+                repo.getCourse(id, course);
+                editable.setValue(false);
+            }
         });
 
-        course.addSource(termId, (id) -> {
+        repoCourse.addSource(termId, (id) -> {
             course.setValue(new Course("", new Date(), new Date(), "", false, false, id));
             editable.setValue(true);
         });
-        assessments = Transformations.switchMap(courseId, (id) -> Transformations.map(repo.getAllAssessments(), (list) -> list.stream()
-                .filter(assessment -> assessment.getCourseId()==id)
+
+        assessments = Transformations.switchMap(course, (c) -> Transformations.map(repo.getAllAssessments(), (list) -> list.stream()
+                .filter(assessment -> assessment.getCourseId()==c.getId())
                 .collect(Collectors.toList())));
         mentors = repo.getAllAssignedMentorsForCourse(courseId);
         notes = Transformations.switchMap(courseId, (id) -> Transformations.map(repo.getAllNotes(), (list) -> list.stream()
                 .filter(note -> note.getCourseId()==id)
                 .collect(Collectors.toList())));
-        editable = new MutableLiveData<>();
+
     }
 
     public void LoadCourse(int id){
-        courseId.postValue(id);
+        courseId.setValue(id);
     }
 
     public void LoadNewCourse(int termId){
@@ -70,6 +76,9 @@ public class CourseDetailViewModel extends AndroidViewModel {
 
     public LiveData<Course> getCourse() {
         return course;
+    }
+    public LiveData<Course> getRepoCourse() {
+        return repoCourse;
     }
 
     public LiveData<List<Assessment>> getAssessments() {
@@ -90,5 +99,11 @@ public class CourseDetailViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> isEditable(){
         return editable;
+    }
+
+    public void deleteCourse(Course currentCourse) {
+        LoadNewCourse(termId.getValue());
+        repo.deleteCourse(currentCourse);
+
     }
 }

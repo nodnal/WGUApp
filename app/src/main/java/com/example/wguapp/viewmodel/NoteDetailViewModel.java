@@ -64,4 +64,12 @@ public class NoteDetailViewModel extends AndroidViewModel {
         editable.setValue(isEditable);
     }
 
+    public void deleteNote(Note currentNote, int cId) {
+        loadNewNote(cId);
+        repo.deleteNote(currentNote);
+    }
+
+    public LiveData<Integer> getCourseId() {
+        return courseId;
+    }
 }

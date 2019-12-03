@@ -2,6 +2,7 @@ package com.example.wguapp.db.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -18,4 +19,7 @@ public interface MentorDao {
 
     @Query("SELECT * FROM mentors")
     LiveData<List<Mentor>> getAllMentors();
+
+    @Delete
+    void delete(Mentor mentor);
 }

@@ -40,6 +40,7 @@ public class TermListActivity extends AppCompatActivity {
     }
 
 
+
     private void AddNewTerm() {
         Intent intent = new Intent(this, TermDetailActivity.class);
         startActivity(intent);

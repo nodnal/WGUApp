@@ -17,13 +17,12 @@
         <activity android:name=".ui.activities.TermListActivity" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
-
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.MainActivity">
+        <activity android:name=".ui.activities.MainActivity"/>
+        <receiver android:name=".util.NotificationPublisher"  android:exported="true" android:enabled="true"/>
 
-        </activity>
     </application>
 
 </manifest>

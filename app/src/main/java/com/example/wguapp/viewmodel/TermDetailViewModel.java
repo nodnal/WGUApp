@@ -27,9 +27,15 @@ public class TermDetailViewModel extends AndroidViewModel {
         repo = Repository.getInstance(application);
         termId = new MutableLiveData<>();
         term = Transformations.switchMap(termId,(id) -> repo.getTerm(id));
-        courses = Transformations.switchMap(term, (term) -> Transformations.map(repo.getAllCourses(), (courseList) -> courseList.stream()
-                .filter(course -> course.getTermId()==term.getId())
-                .collect(Collectors.toList())));
+        courses = Transformations.switchMap(term, (term) -> {
+            if(term != null) {
+                return Transformations.map(repo.getAllCourses(), (courseList) -> courseList.stream()
+                        .filter(course -> course.getTermId() == term.getId())
+                        .collect(Collectors.toList()));
+            }else{
+                return null;
+        }
+        });
     }
 
     public void LoadTerm(int id){
@@ -46,5 +52,9 @@ public class TermDetailViewModel extends AndroidViewModel {
 
     public LiveData<Term> getTerm() {
         return term;
+    }
+
+    public void DeleteTerm(Term term) {
+        repo.deleteTerm(term);
     }
 }
