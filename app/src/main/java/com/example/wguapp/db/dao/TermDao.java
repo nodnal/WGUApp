@@ -17,6 +17,9 @@ public interface TermDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Term term);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(Term[] term);
+
     @Query("SELECT * FROM terms ORDER BY start_date")
     LiveData<List<Term>> getTerms();
 

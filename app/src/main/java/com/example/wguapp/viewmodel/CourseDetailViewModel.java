@@ -31,7 +31,8 @@ public class CourseDetailViewModel extends AndroidViewModel {
     private Repository repo;
 
 
-    public CourseDetailViewModel(@NonNull Application application) {
+    public CourseDetailViewModel(@NonNull Application application)
+    {
         super(application);
         repo = Repository.getInstance(application);
         courseId = new MutableLiveData<>();
