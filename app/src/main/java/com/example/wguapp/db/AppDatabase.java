@@ -25,7 +25,7 @@ import com.example.wguapp.db.entity.Term;
 
 import java.util.concurrent.Executors;
 
-@Database(entities = {Term.class, Course.class, Assessment.class, Note.class, Mentor.class, CourseMentorJoin.class}, version = 7, exportSchema = false)
+@Database(entities = {Term.class, Course.class, Assessment.class, Note.class, Mentor.class, CourseMentorJoin.class}, version = 12, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 

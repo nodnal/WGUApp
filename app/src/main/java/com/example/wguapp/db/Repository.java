@@ -82,10 +82,24 @@ public class Repository {
     public LiveData<List<Mentor>> getAllMentors() {return allMentors;}
 
     public void insertTerm (Term term) {
-        executor.execute(() -> termDao.insert(term));
+        executor.execute(() -> {
+           if(termDao.getTermCount(term.getId()) != 0){
+               termDao.updateTerm(term);
+           }else{
+               termDao.insert(term);
+           }
+        });
     }
     public void insertCourse(Course course, MutableLiveData<Integer> courseId) {
-        executor.execute(() -> courseId.postValue(Math.toIntExact(courseDao.insert(course))));
+        executor.execute(() -> {
+            if(courseDao.getCourseCount(course.getId()) != 0){
+                courseDao.updateCourse(course);
+
+            }else{
+                courseId.postValue(Math.toIntExact(courseDao.insert(course)));
+            }
+
+        });
     }
     public void insertAssessment (Assessment assessment) {
         executor.execute(() -> assessmentDao.insert(assessment));
@@ -152,7 +166,10 @@ public class Repository {
     }
 
     public void saveMentor(Mentor mentor, MutableLiveData<Integer> mentorId, MutableLiveData<Integer> courseId) {
-        executor.execute(() -> mentorId.postValue(Math.toIntExact(mentorDao.insert(mentor))));
+        executor.execute(() -> {
+            mentorDao.updateMentor(mentor);
+            mentorId.postValue(mentor.getId());
+        });
     }
 
     public void saveNewMentor(Mentor mentor, int courseId, MutableLiveData<Integer> mentorId) {
@@ -184,5 +201,8 @@ public class Repository {
 
     public void deleteCourseMentorJoin(CourseMentorJoin courseMentorJoin){
         executor.execute(() -> courseMentorDao.delete(courseMentorJoin));
+    }
+    public void deleteMentor(Mentor mentor) {
+        executor.execute(() -> mentorDao.delete(mentor));
     }
 }

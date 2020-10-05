@@ -2,6 +2,8 @@ package com.example.wguapp.ui.activities;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -30,6 +32,8 @@ public class CourseDetailActivity extends AppCompatActivity {
     private LiveData<List<Mentor>> mentors;
     private LiveData<List<CourseMentorJoin>> assignedMentors;
     private boolean editable;
+    private boolean isCourseFragmentSelected = true;
+    private TabLayout tabLayout;
 
     private Toolbar toolbar;
 
@@ -54,11 +58,35 @@ public class CourseDetailActivity extends AppCompatActivity {
 
     private void initTabs() {
         ViewPager viewPager = findViewById(R.id.course_detail_view_pager);
-        TabLayout tabLayout = findViewById(R.id.course_detail_tab_layout);
+        tabLayout = findViewById(R.id.course_detail_tab_layout);
         CoursePagerAdapter adapter = new CoursePagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                if(position == 0) {
+                    isCourseFragmentSelected = true;
+                    invalidateOptionsMenu();
+                }else{
+                    isCourseFragmentSelected = false;
+                    invalidateOptionsMenu();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
+
 
     private void initUI() {
         toolbar = findViewById(R.id.course_detail_toolbar);
@@ -70,16 +98,20 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         vm.isEditable().observe(this, (value) -> {
             editable = value;
-            if (value) {
-                toolbar.getMenu().setGroupVisible(R.id.group_save, true);
-                toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
-                toolbar.getMenu().setGroupVisible(R.id.group_delete, false);
-
-            } else {
-                toolbar.getMenu().setGroupVisible(R.id.group_save, false);
-                toolbar.getMenu().setGroupVisible(R.id.group_edit, true);
-                toolbar.getMenu().setGroupVisible(R.id.group_delete, true);
+            tabLayout.setEnabled(editable);
+            tabLayout.setSelectedTabIndicatorColor(getColor((editable) ? R.color.colorPrimary : R.color.colorPrimaryDark));
+            LinearLayout tabs = (LinearLayout)tabLayout.getChildAt(0);
+            toolbar.getMenu().setGroupVisible(R.id.group_save, editable);
+            toolbar.getMenu().setGroupVisible(R.id.group_edit, !editable);
+            toolbar.getMenu().setGroupVisible(R.id.group_delete, !editable);
+            tabs.setEnabled(!editable);
+            for(int i = 0; i < tabs.getChildCount(); i++){
+                tabs.getChildAt(i).setClickable(!editable);
+                tabs.getChildAt(i).setEnabled(!editable);
+                tabs.getChildAt(i).setVisibility((editable) ? View.INVISIBLE : View.VISIBLE);
             }
+
+
         });
     }
 
@@ -97,8 +129,14 @@ public class CourseDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.term_menu, menu);
-
-        vm.setEditable(editable);
+        if(isCourseFragmentSelected) {
+            vm.setEditable(editable);
+        }else {
+            toolbar.getMenu().setGroupVisible(R.id.group_save, false);
+            toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
+            toolbar.getMenu().setGroupVisible(R.id.group_delete, false);
+        }
         return true;
     }
+
 }

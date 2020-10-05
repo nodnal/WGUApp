@@ -2,7 +2,6 @@ package com.example.wguapp.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -16,15 +15,18 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.wguapp.ui.adapters.OnViewHolderBindCallback;
-import com.example.wguapp.ui.adapters.CourseListAdapter;
 import com.example.wguapp.R;
 import com.example.wguapp.db.entity.Course;
 import com.example.wguapp.db.entity.Term;
+import com.example.wguapp.ui.adapters.CourseListAdapter;
+import com.example.wguapp.ui.adapters.OnViewHolderBindCallback;
 import com.example.wguapp.util.DateUtil;
 import com.example.wguapp.viewmodel.TermDetailViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -100,23 +102,13 @@ public class TermDetailActivity extends AppCompatActivity implements OnViewHolde
         });
 
         isEditable.observe(this, editable -> {
-            if (editable){
-
-                toolbar.getMenu().setGroupVisible(R.id.group_save, true);
-                toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
-                toolbar.getMenu().setGroupVisible(R.id.group_delete, false);
-                title.setInputType(InputType.TYPE_CLASS_TEXT);
-                startDate.setInputType(InputType.TYPE_CLASS_DATETIME);
-                endDate.setInputType(InputType.TYPE_CLASS_DATETIME);
-            }else{
-                toolbar.getMenu().setGroupVisible(R.id.group_save, false);
-                toolbar.getMenu().setGroupVisible(R.id.group_edit, true);
-                toolbar.getMenu().setGroupVisible(R.id.group_delete, true);
-                title.setInputType(InputType.TYPE_NULL);
-                startDate.setInputType(InputType.TYPE_NULL);
-                endDate.setInputType(InputType.TYPE_NULL);
-            }
-
+                toolbar.getMenu().setGroupVisible(R.id.group_save, editable);
+                toolbar.getMenu().setGroupVisible(R.id.group_edit, !editable);
+                toolbar.getMenu().setGroupVisible(R.id.group_delete, !editable);
+                title.setEnabled(editable);
+                startDate.setEnabled(editable);
+                endDate.setEnabled(editable);
+                if(editable) addCourseBtn.hide(); else addCourseBtn.show();
         });
     }
 
@@ -185,21 +177,38 @@ public class TermDetailActivity extends AppCompatActivity implements OnViewHolde
     private void SaveTerm() {
         Term term = this.term.getValue();
         String title = this.title.getText().toString();
-        Date start = new Date(startDate.getText().toString());
-        Date end = new Date(endDate.getText().toString());
-        Toast toast = Toast.makeText(this,"Changes Saved.", Toast.LENGTH_SHORT);
-        if (term == null) {
-             term = new Term(title,start,end);
-             toast.setText("New Term Added");
-            vm.SaveTerm(term);
+        Date start;
+        Date end;
+        if(title.trim().length() == 0){
+            Toast.makeText(this,"Please enter a valid title.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try{
+            start = DateFormat.getDateInstance(SimpleDateFormat.SHORT).parse(startDate.getText().toString());
+        }catch (ParseException e){
+            Toast toast = Toast.makeText(this,"Invalid start date format. Use mm/dd/yyyy.", Toast.LENGTH_SHORT);
             toast.show();
+            return;
+        }
+        try{
+            end = DateFormat.getDateInstance(SimpleDateFormat.SHORT).parse(endDate.getText().toString());
+        }catch (ParseException e){
+            Toast toast = Toast.makeText(this,"Invalid end date format. Use mm/dd/yyyy.", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        if (term == null) {
+            term = new Term(title,start,end);
+            Toast.makeText(this,"New Term Added", Toast.LENGTH_SHORT).show();
+            vm.SaveTerm(term);
+            isEditable.postValue(false);
             finish();
         }else {
             term.Title = title;
             term.StartDate = start;
             term.EndDate = end;
             vm.SaveTerm(term);
-            toast.show();
+            Toast.makeText(this,"Changes Saved.", Toast.LENGTH_SHORT).show();
             isEditable.postValue(false);
         }
 

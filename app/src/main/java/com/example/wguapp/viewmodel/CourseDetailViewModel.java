@@ -103,7 +103,8 @@ public class CourseDetailViewModel extends AndroidViewModel {
     }
 
     public void deleteCourse(Course currentCourse) {
-        LoadNewCourse(termId.getValue());
+
+        LoadNewCourse(currentCourse.getTermId());
         repo.deleteCourse(currentCourse);
 
     }

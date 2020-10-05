@@ -6,11 +6,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +37,12 @@ public class AssessmentDetailActivity extends AppCompatActivity {
 
     private EditText title;
     private EditText goalDate;
-    private EditText type;
+    private Spinner status;
+    private ArrayAdapter<String> statusAdapter;
+    private String[] assessmentStatus = new String[]{"Not Attempted", "Passed", "Failed"};
+    private Spinner type;
+    private ArrayAdapter<String> typeAdapter;
+    private String[] assessmentTypes = new String[]{"Objective", "Performance"};
     private CheckBox alert;
     private Toolbar toolbar;
     private Assessment currentAssessment;
@@ -68,11 +74,18 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     private void initUI() {
         title = findViewById(R.id.assessment_detail_title);
         goalDate = findViewById(R.id.assessment_detail_goal_date);
-        type = findViewById(R.id.assessment_detail_type);
+
+
         alert = findViewById(R.id.assessment_detail_alert);
         toolbar = findViewById(R.id.assessment_detail_toolbar);
         toolbar.setTitle("WGU -> Assessment Details");
         setSupportActionBar(toolbar);
+        status = findViewById(R.id.assessment_detail_status);
+        statusAdapter = new ArrayAdapter<String>(this, R.layout.spinner_dropdown_item, assessmentStatus);
+        status.setAdapter(statusAdapter);
+        type = findViewById(R.id.assessment_detail_type);
+        typeAdapter = new ArrayAdapter<String>(this, R.layout.spinner_dropdown_item, assessmentTypes);
+        type.setAdapter(typeAdapter);
     }
 
 
@@ -86,30 +99,26 @@ public class AssessmentDetailActivity extends AppCompatActivity {
                 title.setText(a.Title);
                 goalDate.setText(DateUtil.toString(a.GoalDate));
                 alert.setChecked(a.Alert);
-                type.setText(a.Type);
+                int typePos = typeAdapter.getPosition(a.Type);
+                type.setSelection(typePos);
+                int statusPos = statusAdapter.getPosition(a.Status);
+                status.setSelection(statusPos);
+
                 currentAssessment = a;
             }
         });
 
         vm.isEditable().observe(this, editable ->{
             this.editable = editable;
-            if (editable) {
-                toolbar.getMenu().setGroupVisible(R.id.group_save, true);
-                toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
-                toolbar.getMenu().setGroupVisible(R.id.group_delete, false);
-                title.setInputType(InputType.TYPE_CLASS_TEXT);
-                type.setInputType(InputType.TYPE_CLASS_TEXT);
-                alert.setClickable(true);
-                goalDate.setInputType(InputType.TYPE_CLASS_DATETIME);
-            } else {
-                toolbar.getMenu().setGroupVisible(R.id.group_save, false);
-                toolbar.getMenu().setGroupVisible(R.id.group_edit, true);
-                toolbar.getMenu().setGroupVisible(R.id.group_delete, true);
-                title.setInputType(InputType.TYPE_NULL);
-                type.setInputType(InputType.TYPE_NULL);
-                goalDate.setInputType(InputType.TYPE_NULL);
-                alert.setClickable(false);
-            }
+            title.setEnabled(editable);
+            type.setEnabled(editable);
+            status.setEnabled(editable);
+            alert.setClickable(editable);
+            goalDate.setEnabled(editable);
+            toolbar.getMenu().setGroupVisible(R.id.group_save, editable);
+            toolbar.getMenu().setGroupVisible(R.id.group_edit, !editable);
+            toolbar.getMenu().setGroupVisible(R.id.group_delete, !editable);
+
         });
 
     }
@@ -147,50 +156,61 @@ public class AssessmentDetailActivity extends AppCompatActivity {
 
     private void saveAssessment() {
         //TODO: catch errors? better validation?
+        boolean newAssessment = currentAssessment.getId()==0;
         Date goal = new Date(goalDate.getText().toString());
         String newTitle = title.getText().toString().trim();
-        String newType = type.getText().toString().trim();
+        String newType = type.getSelectedItem().toString();
+        String newStatus = status.getSelectedItem().toString();
         boolean forAlert = alert.isChecked();
-        Toast toast = Toast.makeText(this, "Changes Saved.", Toast.LENGTH_SHORT);
 
         if(newTitle.length() == 0 || newType.length() == 0){
-            toast.setText("Title and Type cannot be empty.");
+            Toast.makeText(this, "Title and Type cannot be empty.", Toast.LENGTH_SHORT).show();
         } else if(goal.before(new Date()) && alert.isChecked()) {
-                toast.setText("Cannot set alert in the past.");
+            Toast.makeText(this, "Cannot set alert in the past.", Toast.LENGTH_SHORT).show();
         }else {
 
             Assessment a = currentAssessment;
             a.Title = newTitle;
             a.GoalDate = goal;
             a.Type = newType;
+            a.Status = newStatus;
             a.Alert = forAlert;
 
-            if(a.getId()==0){
-                toast.setText("New Assessment Created");
-            }
-            vm.saveAssessment(a);
-            if(forAlert){
-                scheduleNotification(goal, newTitle);
+            if (newAssessment) {
+
+                vm.saveAssessment(a);
+                if (forAlert) {
+                    scheduleNotification(a);
+                }
+                Toast.makeText(this, "New Assessment Created", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                vm.saveAssessment(a);
+                if (forAlert) {
+                    scheduleNotification(a);
+                }
+                Toast.makeText(this, "Changes Saved", Toast.LENGTH_SHORT).show();
+
             }
         }
-        toast.show();
+
     }
 
-    private void scheduleNotification(Date goal, String title) {
+    private void scheduleNotification(Assessment assessment) {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_school_primarydark_24dp)
                 .setContentTitle("Assessment Alert")
-                .setContentText("Assessment Goal Date Alert for " + title +".")
+                .setContentText("Assessment Goal Date Alert for " + assessment.Title +".")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         Notification notification = builder.build();
 
         Intent intent = new Intent(AssessmentDetailActivity.this, NotificationPublisher.class);
-        intent.putExtra(NotificationPublisher. NOTIFICATION_ID , 67);
+        intent.putExtra(NotificationPublisher. NOTIFICATION_ID , 100 + assessment.getId());
         intent.putExtra(NotificationPublisher. NOTIFICATION , notification);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(AssessmentDetailActivity.this, 0 , intent, 0);
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, goal.getTime(), pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, assessment.GoalDate.getTime(), pendingIntent);
     }
 }

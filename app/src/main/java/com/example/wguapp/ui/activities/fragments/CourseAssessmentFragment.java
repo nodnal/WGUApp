@@ -82,6 +82,7 @@ public class CourseAssessmentFragment extends Fragment implements OnViewHolderBi
         });
     }
 
+
     private void addAssessment() {
 
         if (course != null && course.getId() != 0) {

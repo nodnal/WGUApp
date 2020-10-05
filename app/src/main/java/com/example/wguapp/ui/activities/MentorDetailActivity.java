@@ -1,7 +1,6 @@
 package com.example.wguapp.ui.activities;
 
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -72,25 +71,14 @@ public class MentorDetailActivity extends AppCompatActivity {
         vm.getCourseId().observe(this, cId -> currentCourseId = cId);
         vm.isEditable().observe(this, editable ->{
             this.editable = editable;
-            if (editable) {
-                toolbar.getMenu().setGroupVisible(R.id.group_save, true);
-                toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
-                toolbar.getMenu().setGroupVisible(R.id.group_delete, false);
+            toolbar.getMenu().setGroupVisible(R.id.group_save, editable);
+            toolbar.getMenu().setGroupVisible(R.id.group_edit, !editable);
+            toolbar.getMenu().setGroupVisible(R.id.group_delete, !editable);
 
-                firstName.setInputType(InputType.TYPE_CLASS_TEXT);
-                lastName.setInputType(InputType.TYPE_CLASS_TEXT);
-                phone.setInputType(InputType.TYPE_CLASS_PHONE);
-                email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-            } else {
-                toolbar.getMenu().setGroupVisible(R.id.group_save, false);
-                toolbar.getMenu().setGroupVisible(R.id.group_edit, true);
-                toolbar.getMenu().setGroupVisible(R.id.group_delete, true);
-
-                firstName.setInputType(InputType.TYPE_NULL);
-                lastName.setInputType(InputType.TYPE_NULL);
-                phone.setInputType(InputType.TYPE_NULL);
-                email.setInputType(InputType.TYPE_NULL);
-            }
+            firstName.setEnabled(editable);
+            lastName.setEnabled(editable);
+            phone.setEnabled(editable);
+            email.setEnabled(editable);
         });
 
     }
@@ -120,7 +108,7 @@ public class MentorDetailActivity extends AppCompatActivity {
     }
 
     private void deleteMentor() {
-        vm.deleteMentor(currentMentor, currentCourseId);
+        vm.deleteMentor(currentMentor);
         finish();
     }
 
@@ -134,6 +122,7 @@ public class MentorDetailActivity extends AppCompatActivity {
 
         if(newFirstName.length() == 0 || newLastName.length() == 0 || newPhone.length() == 0  || newEmail.length() == 0 ){
             toast.setText("Cannot Save. Please Complete all Fields.");
+            toast.show();
         }else {
             Mentor m = currentMentor;
             m.FirstName = newFirstName;
@@ -144,10 +133,13 @@ public class MentorDetailActivity extends AppCompatActivity {
             if(m.getId()==0){
                 toast.setText("New Mentor Created");
                 vm.saveNewMentor(m, currentCourseId);
+                toast.show();
+                finish();
             }else{
                 vm.saveMentor(m);
+                toast.show();
             }
-            toast.show();
+
         }
     }
 }

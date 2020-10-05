@@ -9,10 +9,12 @@ import androidx.room.Index;
 primaryKeys = {"course_id", "mentor_id"},
 foreignKeys = {@ForeignKey(entity = Course.class,
                 parentColumns = "id",
-                childColumns = "course_id"),
+                childColumns = "course_id",
+                onDelete = ForeignKey.CASCADE),
                 @ForeignKey(entity = Mentor.class,
                 parentColumns = "id",
-                childColumns = "mentor_id")},
+                childColumns = "mentor_id",
+                onDelete = ForeignKey.CASCADE)},
                 indices = {@Index("course_id"), @Index("mentor_id")})
 public class CourseMentorJoin {
     @ColumnInfo(name = "course_id")

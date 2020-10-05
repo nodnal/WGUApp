@@ -34,6 +34,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
+        android:textColor="#000000"
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Assessment Title"
@@ -45,14 +46,16 @@
         android:id="@+id/assessment_detail_goal_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
-        android:inputType="date"
         android:hint="@string/date_format_hint"
+        android:inputType="date"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/assessment_detail_type"
-        app:layout_constraintTop_toBottomOf="@+id/assessment_detail_type" />
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/assessment_detail_status" />
 
     <CheckBox
         android:id="@+id/assessment_detail_alert"
@@ -66,26 +69,53 @@
         app:layout_constraintTop_toBottomOf="@+id/assessment_detail_goal_date"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
+    <Spinner
         android:id="@+id/assessment_detail_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Performance or Objective"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.23"
+        app:layout_constraintStart_toStartOf="@+id/assessment_detail_title"
         app:layout_constraintTop_toBottomOf="@+id/assessment_detail_title" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="Goal Date:"
         app:layout_constraintBottom_toBottomOf="@+id/assessment_detail_goal_date"
-        app:layout_constraintEnd_toStartOf="@+id/assessment_detail_goal_date"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/assessment_detail_goal_date" />
+        app:layout_constraintStart_toStartOf="@+id/textView11"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Status:"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Type:"
+        app:layout_constraintStart_toStartOf="@+id/assessment_detail_title"
+        app:layout_constraintTop_toBottomOf="@+id/assessment_detail_title" />
+
+    <Spinner
+        android:id="@+id/assessment_detail_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/assessment_detail_type"
+        app:layout_constraintTop_toBottomOf="@+id/assessment_detail_type" />
 </androidx.constraintlayout.widget.ConstraintLayout>

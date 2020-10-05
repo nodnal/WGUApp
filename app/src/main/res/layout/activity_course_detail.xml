@@ -36,7 +36,7 @@
             android:background="@color/colorPrimary"
             app:tabIndicatorColor="@color/colorPrimaryDark"
             app:tabMode="scrollable"
-            app:tabTextColor="@color/colorPrimaryDark" />
+            app:tabTextColor="@color/colorPrimaryDark"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

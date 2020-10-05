@@ -2,7 +2,6 @@ package com.example.wguapp.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -89,19 +88,12 @@ public class NoteDetailActivity extends AppCompatActivity {
         });
         vm.isEditable().observe(this, editable ->{
             this.editable = editable;
-            if (editable) {
-                toolbar.getMenu().setGroupVisible(R.id.group_save, true);
-                toolbar.getMenu().setGroupVisible(R.id.group_edit, false);
-                title.setInputType(InputType.TYPE_CLASS_TEXT);
-                noteText.setInputType(InputType.TYPE_CLASS_TEXT);
-                shareBtn.hide();
-            } else {
-                toolbar.getMenu().setGroupVisible(R.id.group_save, false);
-                toolbar.getMenu().setGroupVisible(R.id.group_edit, true);
-                title.setInputType(InputType.TYPE_NULL);
-                noteText.setInputType(InputType.TYPE_NULL);
-                shareBtn.show();
-            }
+            toolbar.getMenu().setGroupVisible(R.id.group_save, editable);
+            toolbar.getMenu().setGroupVisible(R.id.group_edit, !editable);
+            title.setEnabled(editable);
+            noteText.setEnabled(editable);
+            if(editable) shareBtn.hide(); else shareBtn.show();
+
         });
         courseId.observe(this, (id) -> currentCourseId = id);
 
@@ -144,6 +136,7 @@ public class NoteDetailActivity extends AppCompatActivity {
 
         if(newTitle.length() == 0 || newNoteText.length() == 0){
             toast.setText("Title and Note cannot be empty.");
+            toast.show();
         }else {
             //TODO: Should I make a new Entity and populate it with Integers that are set by live data changes instead?
            Note n = note.getValue();
@@ -152,10 +145,15 @@ public class NoteDetailActivity extends AppCompatActivity {
 
             if(n.getId()==0){
                 toast.setText("New Note Created");
+                vm.saveNote(n);
+                toast.show();
+                finish();
+            }else{
+                vm.saveNote(n);
+                toast.show();
             }
 
-            vm.saveNote(n);
-            toast.show();
+
         }
     }
 }

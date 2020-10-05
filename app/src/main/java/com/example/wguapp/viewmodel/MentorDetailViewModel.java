@@ -9,7 +9,6 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.wguapp.db.Repository;
-import com.example.wguapp.db.entity.CourseMentorJoin;
 import com.example.wguapp.db.entity.Mentor;
 
 public class MentorDetailViewModel extends AndroidViewModel {
@@ -71,10 +70,7 @@ public class MentorDetailViewModel extends AndroidViewModel {
         return courseId;
     }
 
-    public void deleteMentor(Mentor currentMentor, int currentCourseId) {
-        CourseMentorJoin cmj = new CourseMentorJoin();
-        cmj.setMentorId(currentMentor.getId());
-        cmj.setCourseId(currentCourseId);
-        repo.deleteCourseMentorJoin(cmj);
+    public void deleteMentor(Mentor currentMentor) {
+        repo.deleteMentor(currentMentor);
     }
 }

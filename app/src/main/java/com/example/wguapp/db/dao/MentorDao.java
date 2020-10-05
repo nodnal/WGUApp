@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.wguapp.db.entity.Mentor;
 
@@ -16,6 +17,9 @@ public interface MentorDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(Mentor mentor);
+
+    @Update()
+    void updateMentor(Mentor mentor);
 
     @Query("SELECT * FROM mentors")
     LiveData<List<Mentor>> getAllMentors();

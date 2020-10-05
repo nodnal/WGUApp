@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.wguapp.db.entity.Term;
 
@@ -16,6 +17,12 @@ public interface TermDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Term term);
+
+    @Update()
+    void updateTerm(Term term);
+
+    @Query("SELECT count() FROM terms WHERE id = :id")
+    int getTermCount(Integer id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Term[] term);

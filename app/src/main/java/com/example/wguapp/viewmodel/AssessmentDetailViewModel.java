@@ -38,7 +38,7 @@ public class AssessmentDetailViewModel extends AndroidViewModel {
 
         });
         assessment.addSource(courseId, (id) ->{
-            Assessment a = new Assessment("", "", new Date(), false, id);
+            Assessment a = new Assessment("", "", "", new Date(), false, id);
             assessment.setValue(a);
             editable.setValue(true);
         } );

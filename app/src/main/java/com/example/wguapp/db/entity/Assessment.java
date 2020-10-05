@@ -22,12 +22,15 @@ public class Assessment {
     public Date GoalDate;
     @ColumnInfo(name = "alert")
     public boolean Alert;
+    @ColumnInfo(name = "status")
+    public String Status;
 
     public Assessment(){}
 
-    public Assessment(String title, String type, Date goalDate, boolean alert, int courseId) {
+    public Assessment(String title, String type, String status, Date goalDate, boolean alert, int courseId) {
         this.Title = title;
         this.Type = type;
+        this.Status = status;
         this.GoalDate = goalDate;
         this.courseId = courseId;
         this.Alert = alert;
